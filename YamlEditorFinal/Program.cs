@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Logging;
 
 namespace YamlEditorFinal
 {
@@ -17,6 +18,7 @@ namespace YamlEditorFinal
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new YamlEditorFinal());
+
         }
     }
 }

@@ -46,8 +46,21 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="YamlDotNet, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlDotNet.5.3.0\lib\net45\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logging\ComposedRecorder.cs" />
+    <Compile Include="Logging\ConsoleRecorder.cs" />
+    <Compile Include="Logging\CounterDecorator.cs" />
+    <Compile Include="Logging\DateRecorderDecorator.cs" />
+    <Compile Include="Logging\FileRecorder.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\IRecorder.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\TextBoxRecorder.cs" />
+    <Compile Include="Logging\TraceRecorder.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -69,6 +82,7 @@
     <EmbeddedResource Include="YamlEditorFinal.resx">
       <DependentUpon>YamlEditorFinal.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
