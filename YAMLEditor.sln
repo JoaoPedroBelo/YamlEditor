@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YamlEditorConsole", "YamlEditorConsole\YamlEditorConsole.csproj", "{ADF6B072-A1C6-4E4C-859F-228BA438C99B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YamlEditor", "YamlEditorFinal\YamlEditor.csproj", "{7279DFD7-7616-476D-B3D7-6187932D932E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YamlEditor", "YamlEditor\YamlEditor.csproj", "{7279DFD7-7616-476D-B3D7-6187932D932E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
