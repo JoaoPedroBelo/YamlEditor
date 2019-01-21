@@ -1,33 +1,23 @@
 using System.Collections.Generic;
-
+using System;
 namespace YamlEditorConsole
 {
-    class MyYamlMappingNode : MyYamlNode
+    public class MyYamlMappingNode : MyYamlNode
     {
-        public List<MyYamlNode> nodes { get; set; }
-        public int indentAmount { get; private set; }
 
-        public MyYamlMappingNode(string name, int indentAmount) : base (name)
-        {
-            this.nodes = new List<MyYamlNode>();
-            this.indentAmount = indentAmount;
-        }
 
-        public void AddChildren(MyYamlNode child)
-        {
-            this.nodes.Add(child);
-        }
+        public MyYamlMappingNode(string name, int indentAmount) : base(name, indentAmount) { }
 
         public override string ToString()
         {
             var indent = new string(' ', indentAmount);
             string text = indent + this.name + ":\n";
             if (name == "") text = ""; //If is empty overwrites previous value
+            if (name == "-") text = "-"; //In case there is a sequence node in the beggining of the file it is read as a mapping node
             foreach (MyYamlNode node in nodes)
             {
                 text += node.ToString();
             }
-
             return text;
         }
     }

@@ -1,6 +1,3 @@
-### Device Trackers ###
-
-# Automatic (Car Service)
 - platform: automatic
   entity_namespace: obd
   client_id: !secret automatic_client_id

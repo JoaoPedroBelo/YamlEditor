@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Logging;
 
-namespace YamlEditorFinal
+namespace YamlEditor
 {
     static class Program
     {
@@ -17,7 +17,7 @@ namespace YamlEditorFinal
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new YamlEditorFinal());
+           Application.Run(new YamlEditor());
 
         }
     }
