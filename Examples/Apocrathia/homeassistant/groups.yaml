@@ -1,9 +1,14 @@
+### Groups ###
+
+# Views
 default_view:
   view: yes
   name: Home
   entities:
+#    - binary_sensor.vacancy
     - device_tracker.ios_ians_iphone
     - device_tracker.ios_aimees_iphone
+#    - sensor.time
     - group.living_room
     - group.foyer
     - group.dining_room
@@ -15,6 +20,7 @@ default_view:
     - group.workshop
     - group.outside
     - group.roombas
+
 security:
   view: yes
   name: Security
@@ -22,12 +28,14 @@ security:
     - group.security_system
     - group.ring_doorbell
     - group.all_locks
+
 media:
   view: yes
   name: Media
   entities:
     - media_player.living_room
     - media_player.master_bedroom
+
 settings_view:
   view: yes
   name: Settings
@@ -36,6 +44,7 @@ settings_view:
     - group.morning_settings
     - group.nighttime_settings
     - group.vacation_settings
+
 everything_view:
   view: yes
   name: Everything Else
@@ -49,6 +58,8 @@ everything_view:
     - group.all_automations
     - group.all_scripts
     - group.weather_overview
+
+# Room Groups
 living_room:
   name: Living Room
   control: hidden
@@ -110,12 +121,14 @@ outside:
     - sun.sun
     - sensor.moon
     - group.weather_summary
+
 time:
   name: Date & Time
   control: hidden
   entities:
     - sensor.date
     - sensor.time
+
 ring_doorbell:
   name: Ring Doorbell
   control: hidden
@@ -126,6 +139,7 @@ ring_doorbell:
     - sensor.ring_front_door_last_ding
     - sensor.ring_front_door_last_motion
     - camera.ring_front_door
+
 security_system:
   name: Security System
   control: hidden
@@ -136,6 +150,7 @@ security_system:
     - binary_sensor.front_door
     - binary_sensor.back_door
     - binary_sensor.garage_door
+
 weather_overview:
   name: Weather overview
   entities:

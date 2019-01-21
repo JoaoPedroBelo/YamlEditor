@@ -1,3 +1,6 @@
+### Cameras ###
+
+# International Space Station
 - platform: generic
   name: 'iss'
   friendly_name: 'International Space Station'

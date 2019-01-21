@@ -7,7 +7,6 @@ namespace YamlEditorConsole
 {
     class Program
     {
-        public static int indentNr = 0;
         static void Main(string[] args)
         {
             Logger.Instance.Recorder = new Logging.DateRecorderDecorator(new CounterDecorator(new ConsoleRecorder()));
@@ -45,39 +44,10 @@ namespace YamlEditorConsole
                 Console.Write(item.ToString());
             } */
 
-            var configuration = new MyYamlFile("C:/Users/Dfmar/source/repos/YamlEditor/Examples/Apocrathia/homeassistant/configuration.yaml");
-            iterateFiles(MyYamlFile.all_files);
-            //configuration.SaveAllFiles();
-            //Console.WriteLine(configuration.ToString());
-            //iterateList(configuration.nodes);
-            //Console.WriteLine(configuration.ToString());
-            Console.ReadKey();
-                        
-        }
+            var configuration = new YamlFile("C:/Users/Dfmar/source/repos/YamlEditor/Examples/Apocrathia/homeassistant/configuration.yaml");
 
-        //TESTING METHODS
-        //
-        //
-        public static void iterateList(List<MyYamlNode> lista)
-        {
-            foreach (var node in lista)
-            {
-                var indent = new string(' ', indentNr);
-                Console.WriteLine(indent + node.name + "  " + node.GetType());
-                if (node.nodes != null)
-                {
-                    indentNr += 2;
-                    iterateList(node.nodes);
-                    indentNr -= 2;
-                }
-            }
-        }
-        public static void iterateFiles(List<MyYamlFile> lista)
-        {
-            foreach (var node in lista)
-            {
-                Console.WriteLine(node.fileName);
-            }
+            configuration.WriteToConsole();
+
         }
     }
 }
