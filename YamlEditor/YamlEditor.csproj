@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MaterialSkin">
-      <HintPath>..\packages\MaterialSkin.Updated.0.2.2\lib\MaterialSkin.dll</HintPath>
+    <Reference Include="MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialSkin.0.2.1\lib\MaterialSkin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,6 +51,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data_Model\MyNodeFactory.cs" />
+    <Compile Include="Data_Model\MyYamlFile.cs" />
+    <Compile Include="Data_Model\MyYamlMappingNode.cs" />
+    <Compile Include="Data_Model\MyYamlNode.cs" />
+    <Compile Include="Data_Model\MyYamlScalarNode.cs" />
+    <Compile Include="Data_Model\MyYamlSequenceNode.cs" />
     <Compile Include="Logging\ComposedRecorder.cs" />
     <Compile Include="Logging\ConsoleRecorder.cs" />
     <Compile Include="Logging\CounterDecorator.cs" />

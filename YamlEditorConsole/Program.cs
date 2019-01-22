@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Logging;
+using YamlDotNet.Core;
 
 namespace YamlEditorConsole
 {
@@ -12,8 +13,8 @@ namespace YamlEditorConsole
         {
             Logger.Instance.Recorder = new Logging.DateRecorderDecorator(new CounterDecorator(new ConsoleRecorder()));
 
-            //Data_Model testing:
-            /* List<MyYamlNode> lista = new List<MyYamlNode>();
+            /* //Data_Model testing:
+            List<MyYamlNode> lista = new List<MyYamlNode>();
 
             MyYamlMappingNode weblink = new MyYamlMappingNode("Weblink", 0);
 
@@ -27,9 +28,9 @@ namespace YamlEditorConsole
 
             entities.AddChildren(weblink2);
 
-            MyYamlScalarNode name = new MyYamlScalarNode("name", "", "Home Assistant Webpage", 4);
-            MyYamlScalarNode url = new MyYamlScalarNode("url", "", "url1", 4);
-            MyYamlScalarNode icon = new MyYamlScalarNode("icon", "", "icon1", 4);
+            MyYamlScalarNode name = new MyYamlScalarNode("name", "", "Home Assistant Webpage",ScalarStyle.Plain,4);
+            MyYamlScalarNode url = new MyYamlScalarNode("url", "", "url1", ScalarStyle.Plain,4);
+            MyYamlScalarNode icon = new MyYamlScalarNode("icon", "", "icon1", ScalarStyle.Plain,4);
 
             weblink2.AddChildren(name);
             weblink2.AddChildren(url);
@@ -45,13 +46,15 @@ namespace YamlEditorConsole
                 Console.Write(item.ToString());
             } */
 
-            var configuration = new MyYamlFile("C:/Users/JoaoP/Desktop/YamlEditor/Examples/Apocrathia/homeassistant/configuration.yaml");
+            var configuration = new MyYamlFile("C:/Users/Dfmar/source/repos/JoaoPedroBelo/YamlEditor/Examples/Apocrathia/homeassistant/configuration.yaml");
             iterateFiles(MyYamlFile.all_files);
+
+            Console.WriteLine(MyYamlFile.all_files[1].ToString());
             //configuration.SaveAllFiles();
             //Console.WriteLine(configuration.ToString());
             //iterateList(configuration.nodes);
             //Console.WriteLine(configuration.ToString());
-            Console.ReadLine();
+            
                         
         }
 

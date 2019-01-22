@@ -11,23 +11,19 @@ namespace YamlEditorConsole
         public string fileName { get; private set; } // File name
         public string directory { get; private set; } // File directory
         public YamlStream yaml { get; private set; } // File contents as a YamlStream
-        public List<MyYamlNode> nodes { get; private set; }
-        public static List<MyYamlFile> all_files  = new List<MyYamlFile>();
-        public int indentAmount { get; private set; } 
+        public List<MyYamlNode> nodes = new List<MyYamlNode>();
+        public static List<MyYamlFile> all_files = new List<MyYamlFile>();
+        public int indentAmount = 0;
 
         public MyYamlFile(string file_directory)
         {
-            var file_directory_split = file_directory.Split("/");
+            var file_directory_split = file_directory.Split('/');
             this.fileName = file_directory_split[file_directory_split.Length - 1];
             foreach (var text in file_directory_split)
             {
                 if (text != file_directory_split[file_directory_split.Length - 1]) this.directory += text + "/";
             }
-
-            this.nodes = new List<MyYamlNode>();
-            this.indentAmount = 0;
-
-            LoadFile(file_directory); // sets the yaml value
+            LoadFile(file_directory);
 
             all_files.Add(this);
 
@@ -98,7 +94,7 @@ namespace YamlEditorConsole
                         string[] files = System.IO.Directory.GetFiles(directory + scalar.Value + "/", "*.yaml");
                         foreach (var value in files)
                         {
-                            var value_split = value.Split("/");
+                            var value_split = value.Split('/');
                             var file_to_import = value_split[value_split.Length - 1];
                             if (File.Exists(directory + scalar.Value + "/" + file_to_import)) new MyYamlFile(directory + scalar.Value + "/" + file_to_import);
                             else Logger.Instance.WriteLine("Could not find file '" + directory + scalar.Value + "/" + file_to_import + "'.");
@@ -183,7 +179,7 @@ namespace YamlEditorConsole
                         string[] files = System.IO.Directory.GetFiles(directory + scalar.Value + "/", "*.yaml");
                         foreach (var value in files)
                         {
-                            var value_split = value.Split("/");
+                            var value_split = value.Split('/');
                             var file_to_import = value_split[value_split.Length - 1];
                             if (File.Exists(directory + scalar.Value + "/" + file_to_import)) new MyYamlFile(directory + scalar.Value + "/" + file_to_import);
                             else Logger.Instance.WriteLine("Could not find file '" + directory + scalar.Value + "/" + file_to_import + "'.");
