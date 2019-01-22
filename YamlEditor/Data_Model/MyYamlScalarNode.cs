@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using YamlDotNet.Core;
 
-namespace YamlEditorConsole
+namespace Data_Model
 {
     public class MyYamlScalarNode : MyYamlNode
     {

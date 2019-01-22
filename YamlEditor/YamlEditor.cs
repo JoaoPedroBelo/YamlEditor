@@ -12,6 +12,7 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using YamlDotNet.RepresentationModel;
 using Logging;
+using Data_Model;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -44,6 +45,13 @@ namespace YamlEditor
             Logger.Instance.Recorder = new Logging.DateRecorderDecorator(new CounterDecorator(new TextBoxRecorder(textBox_Log)));
 
         }
+
+        //Corre form no segundo ecra 
+        private void OnFormLoad(object sender, EventArgs e)
+        {
+            this.Location = Screen.AllScreens[1].WorkingArea.Location;
+        }
+
         private void OnExit(object sender, EventArgs e)
         {
             Application.Exit();
@@ -56,76 +64,98 @@ namespace YamlEditor
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 System.Diagnostics.Trace.WriteLine($"Filename: {dialog.FileName}");
-                Logger.Instance.WriteLine($"File  \"{dialog.FileName}\" opened.");
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(dialog.FileName) ?? "");
 
-                mainTreeView.Nodes.Clear();
-                var root = mainTreeView.Nodes.Add(Path.GetFileName(dialog.FileName));
-                root.ImageIndex = root.SelectedImageIndex = 3;
-                LoadFile(root, dialog.FileName);
-                root.Expand();
-            }  
-        }
+                MyYamlFileFactory.CreateMyYamlFile(dialog.FileName);//Loads the file
 
-        private void LoadFile(TreeNode node, string filename)
-        {
-            var yaml = new YamlStream();
-            try
-            {
-                using (var stream = new StreamReader(filename))
+                //Switches the configuration file to first place
+                MyYamlFile configuration = MyYamlFile.all_files[MyYamlFile.all_files.Count - 1];
+                int counter = MyYamlFile.all_files.Count - 1;
+                while (counter > -1)
                 {
-                    yaml.Load(stream);
+                    if (counter == 0) MyYamlFile.all_files[counter] = configuration;
+                    else MyYamlFile.all_files[counter] = MyYamlFile.all_files[counter - 1];
+
+                    counter--;
                 }
-            }
-            catch (Exception exception)
-            {
-                Logger.Instance.WriteLine(exception.Message);
-            }
 
-            if (yaml.Documents.Count == 0) return;
-            LoadChildren(node, yaml.Documents[0].RootNode as YamlMappingNode);
+                PopulateTreeView(mainTreeView, Path.GetDirectoryName(dialog.FileName));
+            }
         }
 
-        private void LoadChildren(TreeNode root, YamlMappingNode mapping)
+        private void PopulateTreeView(TreeView treeView, string base_directory)
         {
-            var children = mapping?.Children;
-            if (children == null) return;
+            treeView.Nodes.Clear();
 
-            foreach (var child in children)
+            TreeNode root = CreateTreeNode("homeassistant", new MyYamlMappingNode("",0));
+            treeView.Nodes.Add(root);
+
+            foreach (MyYamlFile file in MyYamlFile.all_files)
             {
-                var key = child.Key as YamlScalarNode;
-                System.Diagnostics.Trace.Assert(key != null);
-
-                if (child.Value is YamlScalarNode)
+                if (file.directory != (base_directory + "\\"))
                 {
-                    var scalar = child.Value as YamlScalarNode;
-
-                    var node = root.Nodes.Add($"{key.Value}: {scalar.Value}");
-                    node.Tag = child;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex(scalar);
-
-                    if (scalar.Tag == "!include")
+                    string include_dir_name = new DirectoryInfo(file.directory).Name;
+                    TreeNode new_node = new TreeNode();
+                    if (treeView.Nodes.Find(include_dir_name, true).Length == 0)
                     {
-                        LoadFile(node, scalar.Value);
+                        new_node = CreateTreeNode(include_dir_name, new MyYamlMappingNode("", 0));
+                        root.Nodes.Add(new_node);
+                    }
+                    else
+                    {
+                        new_node = treeView.Nodes.Find(include_dir_name, true)[0];
+                    }
+
+                }
+                else
+                {
+                    TreeNode new_node = CreateTreeNode(file.fileName, new MyYamlMappingNode("", 0));
+                    root.Nodes.Add(new_node);
+
+                    if (file.nodes != null)
+                    {
+                        foreach (MyYamlNode yamlnode in file.nodes)
+                        {
+                            PopulateNodes(new_node, yamlnode);
+                        }
                     }
                 }
-                else if (child.Value is YamlSequenceNode)
-                {
-                    var node = root.Nodes.Add(key.Value);
-                    node.Tag = child.Value;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex(child.Value);
+            }
 
-                    LoadChildren(node, child.Value as YamlSequenceNode);
+            treeView.ExpandAll();
+        }
+
+        private void PopulateNodes(TreeNode parent, MyYamlNode yamlnode)
+        {
+            if (yamlnode is MyYamlScalarNode)
+            {
+                parent.Nodes.Add(CreateTreeNode(yamlnode.name,yamlnode));
+            }else if (yamlnode is MyYamlMappingNode)
+            {
+                TreeNode new_parent = CreateTreeNode(yamlnode.name, yamlnode);
+                parent.Nodes.Add(new_parent);
+                foreach (MyYamlNode child in yamlnode.nodes)
+                {
+                    PopulateNodes(new_parent, child);
                 }
-                else if (child.Value is YamlMappingNode)
+            }else if (yamlnode is MyYamlSequenceNode)
+            {
+                TreeNode new_parent = CreateTreeNode(yamlnode.name, yamlnode);
+                parent.Nodes.Add(new_parent);
+                foreach (MyYamlNode child in yamlnode.nodes)
                 {
-                    var node = root.Nodes.Add(key.Value);
-                    node.Tag = child.Value;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex(child.Value);
-
-                    LoadChildren(node, child.Value as YamlMappingNode);
+                    PopulateNodes(new_parent, child);
                 }
             }
+        }
+
+        public TreeNode CreateTreeNode(string name, MyYamlNode yamlnode)
+        {
+            var new_node = new TreeNode();
+            new_node.Name = name;
+            new_node.Text = name;
+            new_node.Tag = yamlnode;
+            return new_node;
         }
 
         private int GetImageIndex(YamlNode node)
@@ -144,41 +174,12 @@ namespace YamlEditor
             return 0;
         }
 
-        private void LoadChildren(TreeNode root, YamlSequenceNode sequence)
-        {
-            foreach (var child in sequence.Children)
-            {
-                if (child is YamlSequenceNode)
-                {
-                    var node = root.Nodes.Add(root.Text);
-                    node.Tag = child;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex(child);
-
-                    LoadChildren(node, child as YamlSequenceNode);
-                }
-                else if (child is YamlMappingNode)
-                {
-                    var node = root.Nodes.Add(root.Text);
-                    node.Tag = child;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex(child);
-
-                    LoadChildren(node, child as YamlMappingNode);
-                }
-                else if (child is YamlScalarNode)
-                {
-                    var scalar = child as YamlScalarNode;
-                    var node = root.Nodes.Add(scalar.Value);
-                    node.Tag = child;
-                    node.ImageIndex = node.SelectedImageIndex = GetImageIndex(child);
-                }
-            }
-        }
-
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
             mainPropertyGrid.SelectedObject = e.Node.Tag;
         }
 
+        //Loads help page of clicked node
         private void OnDoubleClick(object sender, EventArgs e)
         {
             if (mainTreeView.SelectedNode == null) return;
@@ -198,6 +199,7 @@ namespace YamlEditor
     }
 }
 
+//Removes toolstrip border
 public partial class ToolStripNoBoder : ToolStripSystemRenderer
 {
     public ToolStripNoBoder() { }

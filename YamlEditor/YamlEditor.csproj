@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Data_Model\MyNodeFactory.cs" />
     <Compile Include="Data_Model\MyYamlFile.cs" />
+    <Compile Include="Data_Model\MyYamlFileFactory.cs" />
     <Compile Include="Data_Model\MyYamlMappingNode.cs" />
     <Compile Include="Data_Model\MyYamlNode.cs" />
     <Compile Include="Data_Model\MyYamlScalarNode.cs" />

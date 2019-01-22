@@ -1,6 +1,6 @@
 using YamlDotNet.Core;
 
-namespace YamlEditorConsole
+namespace Data_Model
 {
     public static class MyNodeFactory
     {

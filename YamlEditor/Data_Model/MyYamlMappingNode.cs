@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
-namespace YamlEditorConsole
+
+namespace Data_Model
 {
     public class MyYamlMappingNode : MyYamlNode
     {

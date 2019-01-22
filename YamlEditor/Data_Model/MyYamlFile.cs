@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using YamlDotNet.RepresentationModel;
 using Logging;
 
-namespace YamlEditorConsole
+namespace Data_Model
 {
-    class MyYamlFile
+    public class MyYamlFile
     {
         public string fileName { get; private set; } // File name
         public string directory { get; private set; } // File directory
@@ -17,17 +17,13 @@ namespace YamlEditorConsole
 
         public MyYamlFile(string file_directory)
         {
-            var file_directory_split = file_directory.Split('/');
-            this.fileName = file_directory_split[file_directory_split.Length - 1];
-            foreach (var text in file_directory_split)
-            {
-                if (text != file_directory_split[file_directory_split.Length - 1]) this.directory += text + "/";
-            }
+
+            this.directory = (Path.GetDirectoryName(file_directory) ?? "") + "\\";
+            this.fileName = Path.GetFileName(file_directory);
+
             LoadFile(file_directory);
 
             all_files.Add(this);
-
-            Logger.Instance.Recorder = new Logging.DateRecorderDecorator(new CounterDecorator(new ConsoleRecorder()));
         }
 
         /// <summary>
@@ -42,6 +38,7 @@ namespace YamlEditorConsole
                 {
                     yaml.Load(stream);
                 }
+                Logger.Instance.WriteLine($"File  \"{directory + fileName}\" opened.");
             }
             catch (Exception exception)
             {
@@ -85,19 +82,18 @@ namespace YamlEditorConsole
 
                     if (scalar.Tag == "!include")
                     {
-                        if (File.Exists(directory + scalar.Value)) new MyYamlFile(directory + scalar.Value);
+                        if (File.Exists(directory + scalar.Value)) MyYamlFileFactory.CreateMyYamlFile(directory + scalar.Value);
                         else Logger.Instance.WriteLine("Could not find file '" + directory + scalar.Value + "'.");
                     }
                     if (scalar.Tag == "!include_dir_named")
                     {
                         System.IO.Directory.CreateDirectory(directory + scalar.Value);//Create directory if doesnt exists
-                        string[] files = System.IO.Directory.GetFiles(directory + scalar.Value + "/", "*.yaml");
+                        string[] files = System.IO.Directory.GetFiles(directory + scalar.Value + "\\", "*.yaml");
                         foreach (var value in files)
                         {
-                            var value_split = value.Split('/');
-                            var file_to_import = value_split[value_split.Length - 1];
-                            if (File.Exists(directory + scalar.Value + "/" + file_to_import)) new MyYamlFile(directory + scalar.Value + "/" + file_to_import);
-                            else Logger.Instance.WriteLine("Could not find file '" + directory + scalar.Value + "/" + file_to_import + "'.");
+                            var file_to_import = Path.GetFileName(value);
+                            if (File.Exists(directory + scalar.Value + "\\" + file_to_import)) MyYamlFileFactory.CreateMyYamlFile(directory + scalar.Value + "\\" + file_to_import);
+                            else Logger.Instance.WriteLine("Could not find file '" + directory + scalar.Value + "\\" + file_to_import + "'.");
                         }
 
                     }
@@ -170,19 +166,18 @@ namespace YamlEditorConsole
 
                     if (scalar.Tag == "!include")
                     {
-                        if (File.Exists(directory + scalar.Value)) new MyYamlFile(directory + scalar.Value);
+                        if (File.Exists(directory + scalar.Value)) MyYamlFileFactory.CreateMyYamlFile(directory + scalar.Value);
                         else Logger.Instance.WriteLine("Could not find file '" + directory + scalar.Value + "'.");
                     }
                     if (scalar.Tag == "!include_dir_named")
                     {
                         System.IO.Directory.CreateDirectory(directory + scalar.Value);//Create directory if doesnt exists
-                        string[] files = System.IO.Directory.GetFiles(directory + scalar.Value + "/", "*.yaml");
+                        string[] files = System.IO.Directory.GetFiles(directory + scalar.Value + "\\", "*.yaml");
                         foreach (var value in files)
                         {
-                            var value_split = value.Split('/');
-                            var file_to_import = value_split[value_split.Length - 1];
-                            if (File.Exists(directory + scalar.Value + "/" + file_to_import)) new MyYamlFile(directory + scalar.Value + "/" + file_to_import);
-                            else Logger.Instance.WriteLine("Could not find file '" + directory + scalar.Value + "/" + file_to_import + "'.");
+                            var file_to_import = Path.GetFileName(value);
+                            if (File.Exists(directory + scalar.Value + "\\" + file_to_import)) MyYamlFileFactory.CreateMyYamlFile(directory + scalar.Value + "\\" + file_to_import);
+                            else Logger.Instance.WriteLine("Could not find file '" + directory + scalar.Value + "\\" + file_to_import + "'.");
                         }
 
                     }
@@ -249,6 +244,9 @@ namespace YamlEditorConsole
             File.WriteAllText(directory + fileName, ToString());
         }
 
+        /// <summary>
+        /// Saves the files
+        /// </summary>
         public void SaveAllFiles()
         {
             foreach (MyYamlFile file in all_files)
@@ -259,7 +257,7 @@ namespace YamlEditorConsole
         }
 
         /// <summary>
-        /// Returns the yamlStream
+        /// Returns the all the file data as string
         /// </summary>
         public override string ToString()
         {
@@ -270,5 +268,19 @@ namespace YamlEditorConsole
             }
             return text;
         }
-    }
+
+        /// <summary>
+        /// Returns the all the files data as string for testing purposes
+        /// </summary>
+        public static string All_Files_ToString()
+        {
+            string text = "";
+            foreach (MyYamlFile file in all_files)
+            {
+                text += file.ToString();
+            }
+            return text;
+        }
+        
+}
 }

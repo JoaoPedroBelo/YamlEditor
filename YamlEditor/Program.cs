@@ -17,7 +17,7 @@ namespace YamlEditor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-           Application.Run(new YamlEditor());
+            Application.Run(new YamlEditor());
 
         }
     }
