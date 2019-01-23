@@ -5,7 +5,7 @@ party_lights:
     data:
       entity_id: light.front_porch_lights
       effect: colorloop
-      brightness_pct: 100
+      brightness_pct: 80
 annoying_lights:
   alias: 'Annoy Aimee'
   sequence:

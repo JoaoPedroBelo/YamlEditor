@@ -233,7 +233,6 @@ namespace YamlEditor
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
             mainPropertyGrid.SelectedObject = e.Node.Tag;
-            MessageBox.Show(mainTreeView.SelectedNode.Tag.ToString());
         }
 
         //Loads help page of clicked node

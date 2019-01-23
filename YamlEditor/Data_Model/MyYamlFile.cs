@@ -129,7 +129,7 @@ namespace Data_Model
             foreach (var child in children)
             {
                 var key = child as YamlScalarNode;
-                //System.Diagnostics.Trace.Assert(key != null);
+
 
                 if (child is YamlMappingNode)
                 {
@@ -158,7 +158,7 @@ namespace Data_Model
             foreach (var child in children)
             {
                 var key = child.Key as YamlScalarNode;
-                //System.Diagnostics.Trace.Assert(key != null);
+
 
                 if (child.Value is YamlScalarNode)
                 {
@@ -214,11 +214,6 @@ namespace Data_Model
                     var scalar = child as YamlScalarNode;
                     parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode("", scalar.Tag, scalar.Value, scalar.Style, indentAmount));
 
-                    //CANT HAVE INCLUDE IN SEQUENCE CHILDREN???
-                    /* if (scalar.Tag == "!include")
-                    {
-                        LoadFile(node, scalar.Value);
-                    } */
                 }
                 else if (child is YamlSequenceNode)
                 {
