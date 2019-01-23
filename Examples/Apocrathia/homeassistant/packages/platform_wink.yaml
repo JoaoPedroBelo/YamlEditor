@@ -1,5 +1,3 @@
-## Wink ##
-
 homeassistant:
   customize:
     sensor.wink_master_relay_temperature:
@@ -9,7 +7,7 @@ homeassistant:
     binary_sensor.wink_master_relay_presence:
       friendly_name: Master Relay Presence
     sensor.wink_master_relay_proximity:
-     friendly_name: Master Relay Proximity 
+      friendly_name: Master Relay Proximity
     switch.wink_overhead_light:
       icon: mdi:ceiling-light
     switch.wink_ceiling_fan:
@@ -17,7 +15,6 @@ homeassistant:
     light.wink_dining_room:
       hidden: false
       icon: mdi:ceiling-light
-    # Duplicate objects
     binary_sensor.ring_front_door_motion:
       hidden: true
     binary_sensor.ring_front_door_ding:
@@ -30,38 +27,23 @@ homeassistant:
       hidden: true
     climate.wink_percivale_downstairs_thermostat:
       hidden: true
-  customize_glob: 
-    "light.wink_*":
+  customize_glob:
+    light.wink_*:
       hidden: true
-
 wink:
-#  email: !secret wink_email
-#  password: !secret wink_password
-#  client_id: !secret wink_client_id
-#  client_secret: !secret wink_client_secret
   local_control: false
-
-# Binary Sensors
 binary_sensor:
 - platform: wink
   entity_namespace: wink
-
-# Climate
 climate:
 - platform: wink
   entity_namespace: wink
-
-# Lights
 light:
 - platform: wink
   entity_namespace: wink
-
-# Sensors
 sensor:
 - platform: wink
   entity_namespace: wink
-
-# Switch
 switch:
 - platform: wink
   entity_namespace: wink

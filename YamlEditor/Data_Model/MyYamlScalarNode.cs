@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using YamlDotNet.Core;
 
 namespace Data_Model
 {
     public class MyYamlScalarNode : MyYamlNode
     {
-        public string value_type { get; private set; }//PLACEHOLDER SOLUTION
-        public string value { get; private set; }
-        public string tag { get; private set; }
+        public string value_type { get; set; }//PLACEHOLDER SOLUTION
+        public string value { get; set; }
+        public string tag { get; set; }
         public ScalarStyle style;
         public override List<MyYamlNode> nodes { get; set; }
 
@@ -37,14 +38,29 @@ namespace Data_Model
 
         public override string ToString()
         {
+            var indent = new string(' ', indentAmount);
+
             string print_tag = tag;
             if (!(string.IsNullOrEmpty(tag))) print_tag += " ";
 
             string print_value = value;
             if (style == ScalarStyle.SingleQuoted) print_value = "'" + value + "'";
             else if (style == ScalarStyle.DoubleQuoted) print_value = "\"" + value + "\"";
+            else if (style == ScalarStyle.Folded)
+            {
+                print_value = ">\n";
+                var value_lines = value.Split('\n');
+                foreach (string line in value_lines)
+                {
+                    if (line == value_lines[0] || line == value_lines[value_lines.Length - 1])
+                        print_value += indent + "  " + line;
+                    else
+                        print_value += indent + "    " + line;
+                }
+                
+                
+            }
 
-            var indent = new string(' ', indentAmount);
             string text = indent + name + ": " + print_tag + print_value + '\n';
             if (name == "") text = print_tag + print_value + '\n';
             return text;

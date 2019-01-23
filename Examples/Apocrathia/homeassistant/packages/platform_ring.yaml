@@ -1,28 +1,17 @@
-# Ring
-
-# From configuration.yaml
 ring:
   username: !secret ring_username
   password: !secret ring_password
-
-# From binary_sensors.yaml
 binary_sensor:
-# Ring
-  - platform: ring
-    entity_namespace: ring
-
-# from sensors.yaml
+- platform: ring
+  entity_namespace: ring
 sensor:
-# Ring
-  - platform: ring
-    entity_namespace: ring
-    monitored_conditions:
-      - last_activity
-      - last_ding
-      - last_motion
-      - volume
-
-# From camera.yaml
+- platform: ring
+  entity_namespace: ring
+  monitored_conditions:
+    - last_activity
+    - last_ding
+    - last_motion
+    - volume
 camera:
-  - platform: ring
-    entity_namespace: ring
+- platform: ring
+  entity_namespace: ring

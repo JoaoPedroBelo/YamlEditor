@@ -1,7 +1,3 @@
-### HomeKit ###
-
-# From configuration.yaml
-# HomeKit
 homekit:
   pincode: !secret homekit_pin
   port: 51827

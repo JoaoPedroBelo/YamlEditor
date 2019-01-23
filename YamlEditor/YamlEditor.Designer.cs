@@ -128,6 +128,7 @@ namespace YamlEditor
             this.toolStripButton_Save.Name = "toolStripButton_Save";
             this.toolStripButton_Save.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton_Save.Text = "Save File";
+            this.toolStripButton_Save.Click += new System.EventHandler(this.toolStripButton_Save_Click);
             // 
             // toolStripButton_Undo
             // 

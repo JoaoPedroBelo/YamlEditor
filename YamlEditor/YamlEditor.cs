@@ -49,7 +49,7 @@ namespace YamlEditor
         //Corre form no segundo ecra 
         private void OnFormLoad(object sender, EventArgs e)
         {
-            this.Location = Screen.AllScreens[1].WorkingArea.Location;
+            //this.Location = Screen.AllScreens[1].WorkingArea.Location;
         }
 
         private void OnExit(object sender, EventArgs e)
@@ -59,10 +59,13 @@ namespace YamlEditor
 
         private void OnOpen(object sender, EventArgs e)
         {
+            DeleteAllFilesAndNodesFromMemory();
             var dialog = new OpenFileDialog()
             { Filter = @"Yaml files (*.yaml)|*.yaml|All files (*.*)|*.*", DefaultExt = "yaml" };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
+                Cursor.Current = Cursors.WaitCursor;
+
                 System.Diagnostics.Trace.WriteLine($"Filename: {dialog.FileName}");
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(dialog.FileName) ?? "");
 
@@ -81,10 +84,13 @@ namespace YamlEditor
 
                 PopulateTreeView(mainTreeView, Path.GetDirectoryName(dialog.FileName));
             }
+
+            Cursor.Current = Cursors.Default;
         }
 
         private void PopulateTreeView(TreeView treeView, string base_directory)
         {
+
             treeView.Nodes.Clear();
 
             foreach (MyYamlFile file in MyYamlFile.all_files)
@@ -119,7 +125,6 @@ namespace YamlEditor
                     }
                 }
             }
-
             //treeView.ExpandAll();
         }
 
@@ -228,6 +233,7 @@ namespace YamlEditor
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
             mainPropertyGrid.SelectedObject = e.Node.Tag;
+            MessageBox.Show(mainTreeView.SelectedNode.Tag.ToString());
         }
 
         //Loads help page of clicked node
@@ -247,6 +253,16 @@ namespace YamlEditor
                 }
 
             }
+        }
+
+        public void DeleteAllFilesAndNodesFromMemory()
+        {
+            MyYamlFile.all_files.Clear();
+        }
+
+        private void toolStripButton_Save_Click(object sender, EventArgs e)
+        {
+            new MyYamlFile().SaveAllFiles();
         }
     }
 }

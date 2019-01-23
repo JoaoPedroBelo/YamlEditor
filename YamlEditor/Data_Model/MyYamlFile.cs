@@ -15,9 +15,10 @@ namespace Data_Model
         public static List<MyYamlFile> all_files = new List<MyYamlFile>();
         public int indentAmount = 0;
 
+        public MyYamlFile() { }
+
         public MyYamlFile(string file_directory)
         {
-
             this.directory = (Path.GetDirectoryName(file_directory) ?? "") + "\\";
             this.fileName = Path.GetFileName(file_directory);
 
@@ -42,7 +43,7 @@ namespace Data_Model
             }
             catch (Exception exception)
             {
-                Logger.Instance.WriteLine(exception.Message);
+                Logger.Instance.WriteLine(exception.Message + " In file '" + filename + "'");
             }
 
             if (yaml.Documents.Count == 0) return;
@@ -157,7 +158,7 @@ namespace Data_Model
             foreach (var child in children)
             {
                 var key = child.Key as YamlScalarNode;
-                System.Diagnostics.Trace.Assert(key != null);
+                //System.Diagnostics.Trace.Assert(key != null);
 
                 if (child.Value is YamlScalarNode)
                 {
@@ -242,6 +243,7 @@ namespace Data_Model
         public void SaveFile()
         {
             File.WriteAllText(directory + fileName, ToString());
+            Logger.Instance.WriteLine($"File saved: '{ directory + fileName }'");
         }
 
         /// <summary>
@@ -251,9 +253,9 @@ namespace Data_Model
         {
             foreach (MyYamlFile file in all_files)
             {
-
                 file.SaveFile();
             }
+            Logger.Instance.WriteLine("All files saved.");
         }
 
         /// <summary>
@@ -281,6 +283,6 @@ namespace Data_Model
             }
             return text;
         }
-        
-}
+
+    }
 }

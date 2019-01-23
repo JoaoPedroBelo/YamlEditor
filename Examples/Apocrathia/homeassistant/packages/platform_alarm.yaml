@@ -1,4 +1,3 @@
-### Alarm System ###
 homeassistant:
   customize:
     alarm_control_panel.home:
@@ -13,9 +12,6 @@ homeassistant:
       icon: mdi:door
     binary_sensor.garage_door:
       icon: mdi:door
-# From configuration.yaml
-
-# Envisalink
 envisalink:
   host: !secret envisalink_ip
   panel_type: HONEYWELL

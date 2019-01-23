@@ -5,7 +5,7 @@ namespace Data_Model
 {
     public abstract class MyYamlNode
     {
-        public string name { get; private set; }
+        public string name { get; set; }
         public int indentAmount { get; private set; }
         public abstract List<MyYamlNode> nodes { get; set; }
 
