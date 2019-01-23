@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Logging
 {
@@ -21,6 +19,6 @@ namespace Logging
             Component.Write(String.Format("{0} # {1}", ++Counter, aMessage));
         }
 
-        #endregion
+        #endregion IRecorder Members
     }
 }

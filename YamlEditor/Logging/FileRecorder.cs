@@ -6,18 +6,18 @@ namespace Logging
     {
         private StreamWriter Stream { get; set; }
 
-        public FileRecorder( string aFileName )
+        public FileRecorder(string aFileName)
         {
-            Stream = new StreamWriter( aFileName, true ) { AutoFlush = true };
+            Stream = new StreamWriter(aFileName, true) { AutoFlush = true };
         }
 
         #region IRecorder Members
 
-        public void Write( string aMessage )
+        public void Write(string aMessage)
         {
-            Stream.WriteLine( aMessage );
+            Stream.WriteLine(aMessage);
         }
 
-        #endregion
+        #endregion IRecorder Members
     }
 }

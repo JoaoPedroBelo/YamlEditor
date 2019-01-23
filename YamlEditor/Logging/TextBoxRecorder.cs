@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using Logging;
 
 namespace Logging
 {
@@ -8,27 +7,27 @@ namespace Logging
         public TextBox TextBox { get; private set; }
         private static object padlock = new object();
 
-        public TextBoxRecorder( TextBox aTextBox )
+        public TextBoxRecorder(TextBox aTextBox)
         {
             TextBox = aTextBox;
         }
 
-        delegate void AppendTextCallback( string aMessage );
+        private delegate void AppendTextCallback(string aMessage);
 
-        public void Write( string aMessage )
+        public void Write(string aMessage)
         {
-            if ( TextBox == null ) return;
+            if (TextBox == null) return;
 
-            if ( TextBox.InvokeRequired )
+            if (TextBox.InvokeRequired)
             {
                 AppendTextCallback callback = Write;
-                TextBox.Invoke( callback, aMessage );
+                TextBox.Invoke(callback, aMessage);
             }
             else
             {
-                lock ( padlock )
+                lock (padlock)
                 {
-                    TextBox.AppendText( aMessage );
+                    TextBox.AppendText(aMessage);
                 }
             }
         }

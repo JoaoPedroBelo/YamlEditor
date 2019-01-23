@@ -1,18 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using Data_Model;
+using Logging;
 using MaterialSkin;
 using MaterialSkin.Controls;
-using YamlDotNet.RepresentationModel;
-using Logging;
-using Data_Model;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -43,10 +36,9 @@ namespace YamlEditor
             toolStrip_TopMenu.Renderer = new ToolStripNoBoder();
 
             Logger.Instance.Recorder = new Logging.DateRecorderDecorator(new CounterDecorator(new TextBoxRecorder(textBox_Log)));
-
         }
 
-        //Corre form no segundo ecra 
+        //Corre form no segundo ecra
         private void OnFormLoad(object sender, EventArgs e)
         {
             //this.Location = Screen.AllScreens[1].WorkingArea.Location;
@@ -90,7 +82,6 @@ namespace YamlEditor
 
         private void PopulateTreeView(TreeView treeView, string base_directory)
         {
-
             treeView.Nodes.Clear();
 
             foreach (MyYamlFile file in MyYamlFile.all_files)
@@ -181,7 +172,6 @@ namespace YamlEditor
                 {
                     PopulateNodes(new_parent, child);
                 }
-
             }
             else if (yamlnode is MyYamlSequenceNode)
             {
@@ -250,7 +240,6 @@ namespace YamlEditor
                     mainTabControl.SelectTab(helpTabPage);
                     Logger.Instance.WriteLine($"Help page  \"https://www.home-assistant.io/components/{ selected.Text }.{ childAsScalarNode.value }\" opened.");
                 }
-
             }
         }
 
@@ -266,11 +255,12 @@ namespace YamlEditor
     }
 }
 
-
 //Removes toolstrip border
 public partial class ToolStripNoBoder : ToolStripSystemRenderer
 {
-    public ToolStripNoBoder() { }
+    public ToolStripNoBoder()
+    {
+    }
 
     protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
     {

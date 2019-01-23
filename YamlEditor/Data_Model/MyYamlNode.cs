@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System;
 
 namespace Data_Model
 {
@@ -17,7 +16,9 @@ namespace Data_Model
         }
 
         public abstract void AddChildren(MyYamlNode child);
+
         public abstract bool Contains(string name);
+
         public abstract MyYamlNode GetFirst(string name);
     }
 }
