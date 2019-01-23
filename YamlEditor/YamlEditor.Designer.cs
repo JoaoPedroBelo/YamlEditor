@@ -190,13 +190,13 @@ namespace YamlEditor
             // 
             this.mainImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("mainImageList.ImageStream")));
             this.mainImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.mainImageList.Images.SetKeyName(0, "tag.png");
-            this.mainImageList.Images.SetKeyName(1, "package-variant.png");
-            this.mainImageList.Images.SetKeyName(2, "lock.png");
-            this.mainImageList.Images.SetKeyName(3, "package-variant-closed.png");
-            this.mainImageList.Images.SetKeyName(4, "badminton.png");
-            this.mainImageList.Images.SetKeyName(5, "baseball.png");
-            this.mainImageList.Images.SetKeyName(6, "file-move.png");
+            this.mainImageList.Images.SetKeyName(0, "001-price-tag.png");
+            this.mainImageList.Images.SetKeyName(1, "003-packing.png");
+            this.mainImageList.Images.SetKeyName(2, "004-lock.png");
+            this.mainImageList.Images.SetKeyName(3, "002-box.png");
+            this.mainImageList.Images.SetKeyName(4, "004-lego-cube-or-square - Copy.png");
+            this.mainImageList.Images.SetKeyName(5, "lego_with_link.png");
+            this.mainImageList.Images.SetKeyName(6, "005-share-link.png");
             // 
             // splitContainer_PropertiesGrid
             // 

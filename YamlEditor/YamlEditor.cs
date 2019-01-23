@@ -87,58 +87,98 @@ namespace YamlEditor
         {
             treeView.Nodes.Clear();
 
-            TreeNode root = CreateTreeNode("homeassistant", new MyYamlMappingNode("",0));
-            treeView.Nodes.Add(root);
-
             foreach (MyYamlFile file in MyYamlFile.all_files)
             {
+                TreeNode new_node = new TreeNode();
+
                 if (file.directory != (base_directory + "\\"))
                 {
-                    string include_dir_name = new DirectoryInfo(file.directory).Name;
-                    TreeNode new_node = new TreeNode();
-                    if (treeView.Nodes.Find(include_dir_name, true).Length == 0)
-                    {
-                        new_node = CreateTreeNode(include_dir_name, new MyYamlMappingNode("", 0));
-                        root.Nodes.Add(new_node);
-                    }
-                    else
-                    {
-                        new_node = treeView.Nodes.Find(include_dir_name, true)[0];
-                    }
+                    //If file directory is different from the base directory loads the new directory files inside the directory node.
+                    string include_dir_name = new DirectoryInfo(file.directory).Name; // gets the folder name
+                    TreeNode directory_node = new TreeNode();
+                    directory_node = treeView.Nodes.Find(include_dir_name, true)[0];
 
+                    new_node = CreateTreeNode(file.fileName, file);
+                    directory_node.Nodes.Add(new_node);
                 }
                 else
                 {
-                    TreeNode new_node = CreateTreeNode(file.fileName, new MyYamlMappingNode("", 0));
-                    root.Nodes.Add(new_node);
+                    new_node = CreateTreeNode(file.fileName, file);
+                    treeView.Nodes.Add(new_node);
+                }
 
-                    if (file.nodes != null)
+                foreach (MyYamlNode yamlnode in file.nodes)
+                {
+                    if (yamlnode.nodes != null && yamlnode.nodes[0] is MyYamlSequenceNode)
                     {
-                        foreach (MyYamlNode yamlnode in file.nodes)
-                        {
-                            PopulateNodes(new_node, yamlnode);
-                        }
+                        PopulateNodes(new_node, yamlnode.nodes[0].nodes[0]);
+                    }
+                    else
+                    {
+                        PopulateNodes(new_node, yamlnode);
                     }
                 }
             }
 
-            treeView.ExpandAll();
+            //treeView.ExpandAll();
         }
 
         private void PopulateNodes(TreeNode parent, MyYamlNode yamlnode)
         {
             if (yamlnode is MyYamlScalarNode)
             {
-                parent.Nodes.Add(CreateTreeNode(yamlnode.name,yamlnode));
-            }else if (yamlnode is MyYamlMappingNode)
+                MyYamlScalarNode yamlnodeAsScalar = (MyYamlScalarNode)yamlnode;
+                if (yamlnode.name == "") parent.Nodes.Add(CreateTreeNode(yamlnodeAsScalar.value, yamlnode));
+                else parent.Nodes.Add(CreateTreeNode(yamlnode.name, yamlnode));
+            }
+            else if (yamlnode is MyYamlMappingNode)
             {
-                TreeNode new_parent = CreateTreeNode(yamlnode.name, yamlnode);
-                parent.Nodes.Add(new_parent);
+                TreeNode new_parent = new TreeNode();
+
+                if (yamlnode.name == "")
+                {
+                    try
+                    {
+                        MyYamlMappingNode parentAsMyYamlNode = (MyYamlMappingNode)parent.Tag;
+                        new_parent = CreateTreeNode(parent.Name, yamlnode);
+                        parent.Nodes.Add(new_parent);
+                    }
+                    catch (Exception) { }
+
+                    try
+                    {
+                        MyYamlSequenceNode parentAsMyYamlNode = (MyYamlSequenceNode)parent.Tag;
+                        new_parent = CreateTreeNode(parent.Name, yamlnode);
+                        parent.Nodes.Add(new_parent);
+                    }
+                    catch (Exception) { }
+
+                    try
+                    {
+                        MyYamlFile parentAsMyYamlNode = (MyYamlFile)parent.Tag;
+                        new_parent = CreateTreeNode(parent.Name, yamlnode);
+                        parent.Nodes.Add(new_parent);
+                    }
+                    catch (Exception) { }
+                }
+                else if (yamlnode.name == "-")
+                {
+                    new_parent = CreateTreeNode(yamlnode.name, yamlnode);
+                    parent.Nodes.Add(new_parent);
+                }
+                else
+                {
+                    new_parent = CreateTreeNode(yamlnode.name, yamlnode);
+                    parent.Nodes.Add(new_parent);
+                }
+
                 foreach (MyYamlNode child in yamlnode.nodes)
                 {
                     PopulateNodes(new_parent, child);
                 }
-            }else if (yamlnode is MyYamlSequenceNode)
+
+            }
+            else if (yamlnode is MyYamlSequenceNode)
             {
                 TreeNode new_parent = CreateTreeNode(yamlnode.name, yamlnode);
                 parent.Nodes.Add(new_parent);
@@ -149,27 +189,38 @@ namespace YamlEditor
             }
         }
 
-        public TreeNode CreateTreeNode(string name, MyYamlNode yamlnode)
+        public TreeNode CreateTreeNode(string name, Object yamlnode)
         {
             var new_node = new TreeNode();
             new_node.Name = name;
             new_node.Text = name;
             new_node.Tag = yamlnode;
+            new_node.ImageIndex = new_node.SelectedImageIndex = GetImageIndex(yamlnode);
             return new_node;
         }
 
-        private int GetImageIndex(YamlNode node)
+        private int GetImageIndex(Object node)
         {
-            switch (node.NodeType)
+            if (node is MyYamlMappingNode)
             {
-                case YamlNodeType.Scalar:
-                    if (node.Tag == "!secret") return 2;
-                    if (node.Tag == "!include") return 1;
-                    return 0;
-                case YamlNodeType.Sequence: return 3;
-                case YamlNodeType.Mapping:
-                    if (node is YamlMappingNode mapping && mapping.Children.Any(pair => ((YamlScalarNode)pair.Key).Value == "platform")) return 5;
-                    return 4;
+                if (node is MyYamlMappingNode mapping && mapping.Contains("platform")) return 5;
+                return 4;
+            }
+            else if (node is MyYamlSequenceNode)
+            {
+                return 3;
+            }
+            else if (node is MyYamlScalarNode)
+            {
+                var nodeAsScalar = (MyYamlScalarNode)node;
+                if (nodeAsScalar.tag == "!secret") return 2;
+                if (nodeAsScalar.tag == "!include") return 1;
+                if (nodeAsScalar.tag == "!include_dir_named") return 6;
+                return 0;
+            }
+            else if (node is MyYamlFile)
+            {
+                return 4;
             }
             return 0;
         }
@@ -185,19 +236,21 @@ namespace YamlEditor
             if (mainTreeView.SelectedNode == null) return;
             var selected = mainTreeView.SelectedNode;
 
-            if (selected.Tag is YamlMappingNode node)
+            if (selected.Tag is MyYamlMappingNode node)
             {
-                if (node.Children.Any(p => ((YamlScalarNode)p.Key).Value == "platform"))
+                if (node.Contains("platform"))
                 {
-                    var platform = node.Children.FirstOrDefault(p => ((YamlScalarNode)p.Key).Value == "platform");
-                    mainWebBrowser.Url = new Uri($@"https://www.home-assistant.io/components/{ selected.Text }.{ platform.Value }");
+                    var childAsScalarNode = (MyYamlScalarNode)node.GetFirst("platform");
+                    mainWebBrowser.Url = new Uri($@"https://www.home-assistant.io/components/{ selected.Text }.{ childAsScalarNode.value }");
                     mainTabControl.SelectTab(helpTabPage);
-                    Logger.Instance.WriteLine($"Help page  \"https://www.home-assistant.io/components/{ selected.Text }.{ platform.Value }\" opened.");
+                    Logger.Instance.WriteLine($"Help page  \"https://www.home-assistant.io/components/{ selected.Text }.{ childAsScalarNode.value }\" opened.");
                 }
+
             }
         }
     }
 }
+
 
 //Removes toolstrip border
 public partial class ToolStripNoBoder : ToolStripSystemRenderer

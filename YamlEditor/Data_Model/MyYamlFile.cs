@@ -27,7 +27,7 @@ namespace Data_Model
         }
 
         /// <summary>
-        /// Loads configuration.yaml file and sets the yaml property value
+        /// Loads a yaml file and sets the yaml property value
         /// </summary>
         private void LoadFile(string filename)
         {

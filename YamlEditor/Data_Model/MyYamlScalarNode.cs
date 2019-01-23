@@ -31,6 +31,9 @@ namespace Data_Model
         }
 
         public override void AddChildren(MyYamlNode child) { }
+        public override bool Contains(string name) { return false; }
+        public override MyYamlNode GetFirst(string name) { return null; }
+
 
         public override string ToString()
         {

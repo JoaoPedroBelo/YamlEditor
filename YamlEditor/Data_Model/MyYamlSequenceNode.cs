@@ -14,6 +14,32 @@ namespace Data_Model
             this.nodes.Add(child);
         }
 
+        public override bool Contains(string name)
+        {
+            foreach (var child in nodes)
+            {
+                if (child is MyYamlScalarNode)
+                {
+                    if (child.name == name) return true;
+                }
+                else child.Contains(name);
+            }
+            return false;
+        }
+
+        public override MyYamlNode GetFirst(string name)
+        {
+            foreach (var child in nodes)
+            {
+                if (child is MyYamlScalarNode)
+                {
+                    if (child.name == name) return child;
+                }
+                else child.Contains(name);
+            }
+            return null;
+        }
+
         public override string ToString()
         {
             var indent = new string(' ', indentAmount);
@@ -29,13 +55,11 @@ namespace Data_Model
                 {
                     indent = new string(' ', indentAmount + 2);
                     text += indent + "- " + node.ToString();
-                    //text += indent + "- " + node.ToString();
                     indent = new string(' ', indentAmount);
                 }
                 else
                 {
                     text += indent + "- " + node.ToString().Substring((indentAmount + 2), node.ToString().Length - (indentAmount + 2));
-                    //text += indent + "- " + node.ToString();
                 }
             }
 
