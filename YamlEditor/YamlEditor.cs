@@ -15,6 +15,10 @@ namespace YamlEditor
 {
     public partial class YamlEditor : MaterialForm
     {
+
+        private MyYamlScalarNode selectedScalarNode { get; set; }
+        private CommandManager Manager = new CommandManager();
+
         public YamlEditor()
         {
             InitializeComponent();
@@ -37,6 +41,26 @@ namespace YamlEditor
             toolStrip_TopMenu.Renderer = new ToolStripNoBoder();
 
             Logger.Instance.Recorder = new Logging.DateRecorderDecorator(new CounterDecorator(new TextBoxRecorder(textBox_Log)));
+
+            toolStripButton_Undo.Enabled = false;
+            toolStripButton_Redo.Enabled = false;
+            nameTextBox.Enabled = false;
+            tagTextBox.Enabled = false;
+            valueTextBox.Enabled = false;
+            updateButton.Enabled = false;
+
+            Manager.OnUpdate += (subject, data) =>
+            {
+                toolStripButton_Undo.Enabled = Manager.HasUndo();
+                toolStripButton_Redo.Enabled = Manager.HasRedo();
+                if (selectedScalarNode != null)
+                {
+                    nameTextBox.Text = selectedScalarNode.name;
+                    tagTextBox.Text = selectedScalarNode.tag;
+                    valueTextBox.Text = selectedScalarNode.value;
+                }
+            };
+
         }
 
         //Corre form no segundo ecra
@@ -221,8 +245,6 @@ namespace YamlEditor
             return 0;
         }
 
-        private MyYamlScalarNode selectedScalarNode { get; set; }
-
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
             Logger.Instance.WriteLine("onAfterSelect");
@@ -233,11 +255,18 @@ namespace YamlEditor
                 nameTextBox.Text = selectedScalarNode.name;
                 tagTextBox.Text = selectedScalarNode.tag;
                 valueTextBox.Text = selectedScalarNode.value;
+                nameTextBox.Enabled = true;
+                tagTextBox.Enabled = true;
+                valueTextBox.Enabled = true;
+                updateButton.Enabled = true;
             } else
             {
                 selectedScalarNode = null;
+                nameTextBox.Enabled = false;
+                tagTextBox.Enabled = false;
+                valueTextBox.Enabled = false;
+                updateButton.Enabled = false;
             }
-            //mainPropertyGrid.SelectedObject = e.Node.Tag;
         }
 
         //Loads help page of clicked node
@@ -267,8 +296,6 @@ namespace YamlEditor
         {
             new MyYamlFile().SaveAllFiles();
         }
-
-        private CommandManager Manager = new CommandManager();
 
         private void onPropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
