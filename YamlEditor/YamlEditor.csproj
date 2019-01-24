@@ -75,6 +75,7 @@
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\TextBoxRecorder.cs" />
     <Compile Include="Logging\TraceRecorder.cs" />
+    <Compile Include="Patterns\ISubject.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

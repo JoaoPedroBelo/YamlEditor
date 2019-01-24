@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YamlEditor.Patterns;
 
 namespace YamlEditor.Commands
 {
-    public class CommandManager : ICommandManager
+    public class CommandManager : ICommandManager, ISubject
     {
         protected List<ICommand> Commands { get; } = new List<ICommand>();
         protected int Position { get; set; } = -1;
+
+        public event UpdateEventHandler OnUpdate;
 
         public bool HasUndo()
         {
@@ -27,6 +30,7 @@ namespace YamlEditor.Commands
             Logging.Logger.Instance.WriteLine("CommandManager: Undo");
             Commands[Position].Undo();
             Position--;
+            Notify();
         }
 
         public void Redo()
@@ -35,6 +39,7 @@ namespace YamlEditor.Commands
             Logging.Logger.Instance.WriteLine("CommandManager: Redo");
             Position++;
             Commands[Position].Redo();
+            Notify();
         }
 
         public void Execute(ICommand aCommand)
@@ -47,6 +52,12 @@ namespace YamlEditor.Commands
             aCommand.Execute();
             Commands.Add(aCommand);
             Position = Commands.Count - 1;
+            Notify();
+        }
+
+        public void Notify(object aData = null)
+        {
+            OnUpdate?.Invoke(this, aData);
         }
     }
 }
