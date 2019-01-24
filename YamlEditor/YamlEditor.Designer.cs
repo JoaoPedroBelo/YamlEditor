@@ -44,7 +44,13 @@ namespace YamlEditor
             this.splitContainer_PropertiesGrid = new System.Windows.Forms.SplitContainer();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.propertiesTabPage = new System.Windows.Forms.TabPage();
-            this.mainPropertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.updateButton = new System.Windows.Forms.Button();
+            this.valueTextBoxLabel = new System.Windows.Forms.Label();
+            this.tagTextBoxLabel = new System.Windows.Forms.Label();
+            this.nameTextBoxLabel = new System.Windows.Forms.Label();
+            this.tagTextBox = new System.Windows.Forms.TextBox();
+            this.valueTextBox = new System.Windows.Forms.TextBox();
+            this.nameTextBox = new System.Windows.Forms.TextBox();
             this.helpTabPage = new System.Windows.Forms.TabPage();
             this.mainWebBrowser = new System.Windows.Forms.WebBrowser();
             this.splitContainer_Log = new System.Windows.Forms.SplitContainer();
@@ -138,6 +144,7 @@ namespace YamlEditor
             this.toolStripButton_Undo.Name = "toolStripButton_Undo";
             this.toolStripButton_Undo.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton_Undo.Text = "Undo";
+            this.toolStripButton_Undo.Click += new System.EventHandler(this.onUndoClick);
             // 
             // toolStripButton_Redo
             // 
@@ -147,6 +154,7 @@ namespace YamlEditor
             this.toolStripButton_Redo.Name = "toolStripButton_Redo";
             this.toolStripButton_Redo.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton_Redo.Text = "Redo";
+            this.toolStripButton_Redo.Click += new System.EventHandler(this.onRedoClick);
             // 
             // panel_MainForm
             // 
@@ -230,7 +238,13 @@ namespace YamlEditor
             // 
             // propertiesTabPage
             // 
-            this.propertiesTabPage.Controls.Add(this.mainPropertyGrid);
+            this.propertiesTabPage.Controls.Add(this.updateButton);
+            this.propertiesTabPage.Controls.Add(this.valueTextBoxLabel);
+            this.propertiesTabPage.Controls.Add(this.tagTextBoxLabel);
+            this.propertiesTabPage.Controls.Add(this.nameTextBoxLabel);
+            this.propertiesTabPage.Controls.Add(this.tagTextBox);
+            this.propertiesTabPage.Controls.Add(this.valueTextBox);
+            this.propertiesTabPage.Controls.Add(this.nameTextBox);
             this.propertiesTabPage.Location = new System.Drawing.Point(4, 22);
             this.propertiesTabPage.Name = "propertiesTabPage";
             this.propertiesTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -239,13 +253,63 @@ namespace YamlEditor
             this.propertiesTabPage.Text = "Property";
             this.propertiesTabPage.UseVisualStyleBackColor = true;
             // 
-            // mainPropertyGrid
+            // updateButton
             // 
-            this.mainPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainPropertyGrid.Location = new System.Drawing.Point(3, 3);
-            this.mainPropertyGrid.Name = "mainPropertyGrid";
-            this.mainPropertyGrid.Size = new System.Drawing.Size(807, 396);
-            this.mainPropertyGrid.TabIndex = 0;
+            this.updateButton.Location = new System.Drawing.Point(57, 94);
+            this.updateButton.Name = "updateButton";
+            this.updateButton.Size = new System.Drawing.Size(75, 23);
+            this.updateButton.TabIndex = 6;
+            this.updateButton.Text = "Update";
+            this.updateButton.UseVisualStyleBackColor = true;
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
+            // 
+            // valueTextBoxLabel
+            // 
+            this.valueTextBoxLabel.AutoSize = true;
+            this.valueTextBoxLabel.Location = new System.Drawing.Point(17, 71);
+            this.valueTextBoxLabel.Name = "valueTextBoxLabel";
+            this.valueTextBoxLabel.Size = new System.Drawing.Size(34, 13);
+            this.valueTextBoxLabel.TabIndex = 5;
+            this.valueTextBoxLabel.Text = "Value";
+            // 
+            // tagTextBoxLabel
+            // 
+            this.tagTextBoxLabel.AutoSize = true;
+            this.tagTextBoxLabel.Location = new System.Drawing.Point(25, 45);
+            this.tagTextBoxLabel.Name = "tagTextBoxLabel";
+            this.tagTextBoxLabel.Size = new System.Drawing.Size(26, 13);
+            this.tagTextBoxLabel.TabIndex = 4;
+            this.tagTextBoxLabel.Text = "Tag";
+            // 
+            // nameTextBoxLabel
+            // 
+            this.nameTextBoxLabel.AutoSize = true;
+            this.nameTextBoxLabel.Location = new System.Drawing.Point(16, 19);
+            this.nameTextBoxLabel.Name = "nameTextBoxLabel";
+            this.nameTextBoxLabel.Size = new System.Drawing.Size(35, 13);
+            this.nameTextBoxLabel.TabIndex = 3;
+            this.nameTextBoxLabel.Text = "Name";
+            // 
+            // tagTextBox
+            // 
+            this.tagTextBox.Location = new System.Drawing.Point(57, 42);
+            this.tagTextBox.Name = "tagTextBox";
+            this.tagTextBox.Size = new System.Drawing.Size(100, 20);
+            this.tagTextBox.TabIndex = 2;
+            // 
+            // valueTextBox
+            // 
+            this.valueTextBox.Location = new System.Drawing.Point(57, 68);
+            this.valueTextBox.Name = "valueTextBox";
+            this.valueTextBox.Size = new System.Drawing.Size(100, 20);
+            this.valueTextBox.TabIndex = 1;
+            // 
+            // nameTextBox
+            // 
+            this.nameTextBox.Location = new System.Drawing.Point(57, 16);
+            this.nameTextBox.Name = "nameTextBox";
+            this.nameTextBox.Size = new System.Drawing.Size(100, 20);
+            this.nameTextBox.TabIndex = 0;
             // 
             // helpTabPage
             // 
@@ -337,6 +401,7 @@ namespace YamlEditor
             this.splitContainer_PropertiesGrid.ResumeLayout(false);
             this.mainTabControl.ResumeLayout(false);
             this.propertiesTabPage.ResumeLayout(false);
+            this.propertiesTabPage.PerformLayout();
             this.helpTabPage.ResumeLayout(false);
             this.splitContainer_Log.Panel1.ResumeLayout(false);
             this.splitContainer_Log.Panel1.PerformLayout();
@@ -362,15 +427,21 @@ namespace YamlEditor
         private System.Windows.Forms.SplitContainer splitter_MainForm;
         private System.Windows.Forms.TreeView mainTreeView;
         private System.Windows.Forms.TabControl mainTabControl;
-        private System.Windows.Forms.TabPage propertiesTabPage;
         private System.Windows.Forms.TabPage helpTabPage;
         private System.Windows.Forms.SplitContainer splitContainer_PropertiesGrid;
         private System.Windows.Forms.TextBox textBox_Log;
         private System.Windows.Forms.SplitContainer splitContainer_Log;
         private MaterialSkin.Controls.MaterialLabel materialLabel_Log;
-        private System.Windows.Forms.PropertyGrid mainPropertyGrid;
         private System.Windows.Forms.WebBrowser mainWebBrowser;
         private System.Windows.Forms.ImageList mainImageList;
+        private System.Windows.Forms.TabPage propertiesTabPage;
+        private System.Windows.Forms.Label valueTextBoxLabel;
+        private System.Windows.Forms.Label tagTextBoxLabel;
+        private System.Windows.Forms.Label nameTextBoxLabel;
+        private System.Windows.Forms.TextBox tagTextBox;
+        private System.Windows.Forms.TextBox valueTextBox;
+        private System.Windows.Forms.TextBox nameTextBox;
+        private System.Windows.Forms.Button updateButton;
     }
 }
 
