@@ -11,7 +11,7 @@
   db_url: !secret recorder_db_url
   queries:
   - name: Portfolio morning
-    query: "SELECT state FROM states WHERE entity_id='sensor.personal_capital_investments' and (HOUR(last_changed) >= 22 and (DATEDIFF(NOW(), last_changed) = 1 or DATEDIFF(NOW(), last_changed) = 2 or DATEDIFF(NOW(), last_changed) = 3 or DATEDIFF(NOW(), last_changed) = 4)) ORDER BY last_changed desc LIMIT 1;"
+    query: "SELECT state FROM states WHERE entity_id=''''''''''''''''sensor.personal_capital_investments'''''''''''''''' and (HOUR(last_changed) >= 22 and (DATEDIFF(NOW(), last_changed) = 1 or DATEDIFF(NOW(), last_changed) = 2 or DATEDIFF(NOW(), last_changed) = 3 or DATEDIFF(NOW(), last_changed) = 4)) ORDER BY last_changed desc LIMIT 1;"
     column: 'state'
     unit_of_measurement: $
 - platform: personalcapital
@@ -148,7 +148,7 @@
   name: 10 Year Treasury
   unit_of_measurement: '%'
   scan_interval: 18000
-  command: "wget -O - -q http://money.cnn.com/data/premarket | grep 'last_572094' | awk -F'>' '{print $3}' | awk -F'<' '{print $1}'"
+  command: "wget -O - -q http://money.cnn.com/data/premarket | grep ''''''''''''''''last_572094'''''''''''''''' | awk -F''''''''''''''''>'''''''''''''''' ''''''''''''''''{print $3}'''''''''''''''' | awk -F''''''''''''''''<'''''''''''''''' ''''''''''''''''{print $1}''''''''''''''''"
 - platform: rest
   method: POST
   resource: http://192.168.2.253:1400/DeviceProperties/Control
@@ -163,117 +163,117 @@
     cube_last_action:
       friendly_name: "Cube last action"
       value_template: >
-        {% if as_timestamp(now()) - as_timestamp(states.binary_sensor.cube_158d0001035aa7.last_updated) >50 %}            None          {% else %}            {{state_attr('binary_sensor.cube_158d0001035aa7', 'last_action')}}          {% endif %}                        
+        {% if as_timestamp(now()) - as_timestamp(states.binary_sensor.cube_158d0001035aa7.last_updated) >50 %}            None          {% else %}            {{state_attr(''''''''''''''''binary_sensor.cube_158d0001035aa7'''''''''''''''', ''''''''''''''''last_action'''''''''''''''')}}          {% endif %}                                
     livingroom_temp_rounded:
       friendly_name: "Living room temperature"
-      value_template: "{{states('sensor.temperature_158d0001ab3c88')|round}}"
+      value_template: "{{states(''''''''''''''''sensor.temperature_158d0001ab3c88'''''''''''''''')|round}}"
     study_temp_rounded:
       friendly_name: "Study temperature"
-      value_template: "{{states('sensor.temperature_158d0001ab3b2b')|round}}"
+      value_template: "{{states(''''''''''''''''sensor.temperature_158d0001ab3b2b'''''''''''''''')|round}}"
     sonos_audio_in:
       friendly_name: "Sonos Audio-in"
       value_template: >
-        {%- set audio_in = {'0': 'No SPDIF input connected', '2': 'Stereo', '7': 'Dolby 2.0', '18': 'Dolby 5.1', '20': 'Pause Burst', '21': 'Paused', '22': 'Silence'} -%} {{ audio_in[states.sensor.sonos_stereo.state] | default('NA', true)}}                
+        {%- set audio_in = {''''''''''''''''0'''''''''''''''': ''''''''''''''''No SPDIF input connected'''''''''''''''', ''''''''''''''''2'''''''''''''''': ''''''''''''''''Stereo'''''''''''''''', ''''''''''''''''7'''''''''''''''': ''''''''''''''''Dolby 2.0'''''''''''''''', ''''''''''''''''18'''''''''''''''': ''''''''''''''''Dolby 5.1'''''''''''''''', ''''''''''''''''20'''''''''''''''': ''''''''''''''''Pause Burst'''''''''''''''', ''''''''''''''''21'''''''''''''''': ''''''''''''''''Paused'''''''''''''''', ''''''''''''''''22'''''''''''''''': ''''''''''''''''Silence''''''''''''''''} -%} {{ audio_in[states.sensor.sonos_stereo.state] | default(''''''''''''''''NA'''''''''''''''', true)}}                        
       icon_template: >
-        {%- set audio_in = {'2': 'mdi:surround-sound-2-0', '7': 'mdi:dolby', '18': 'mdi:surround-sound-5-1'} -%} {{ audio_in[states.sensor.sonos_stereo.state] | default('mdi:volume-high', true) }}                
+        {%- set audio_in = {''''''''''''''''2'''''''''''''''': ''''''''''''''''mdi:surround-sound-2-0'''''''''''''''', ''''''''''''''''7'''''''''''''''': ''''''''''''''''mdi:dolby'''''''''''''''', ''''''''''''''''18'''''''''''''''': ''''''''''''''''mdi:surround-sound-5-1''''''''''''''''} -%} {{ audio_in[states.sensor.sonos_stereo.state] | default(''''''''''''''''mdi:volume-high'''''''''''''''', true) }}                        
     battery_status:
       friendly_name: "Battery Status"
       value_template: >
-        {%- set threshold = 25 -%} {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'binary_sensor', 'camera'] -%} {%- for domain in domains -%} {%- for item in states[domain] if ((item.attributes.battery_low is defined and item.attributes['battery_low'] == true) or (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold)) -%}              {{ item.name }}{%- if not loop.last %}, {% endif -%}        {%- endfor -%} {%- endfor -%}                
+        {%- set threshold = 25 -%} {%- set domains = [''''''''''''''''light'''''''''''''''', ''''''''''''''''switch'''''''''''''''', ''''''''''''''''sensor'''''''''''''''', ''''''''''''''''zwave'''''''''''''''', ''''''''''''''''binary_sensor'''''''''''''''', ''''''''''''''''camera''''''''''''''''] -%} {%- for domain in domains -%} {%- for item in states[domain] if ((item.attributes.battery_low is defined and item.attributes[''''''''''''''''battery_low''''''''''''''''] == true) or (item.attributes.battery_level is defined and item.attributes[''''''''''''''''battery_level''''''''''''''''] | int < threshold)) -%}              {{ item.name }}{%- if not loop.last %}, {% endif -%}        {%- endfor -%} {%- endfor -%}                        
     downstairs_hvac_runtime:
       friendly_name: "Downstairs HVAC Runtime"
       unit_of_measurement: "h"
       value_template: >
-        {%- if [states.sensor.downstairs_cool.state|float, states.sensor.downstairs_heat.state|float, 0]|max != None -%}            {{ [states.sensor.downstairs_cool.state|float, states.sensor.downstairs_heat.state|float, 0]|max }}          {%- else -%}            0        {%- endif -%}                
+        {%- if [states.sensor.downstairs_cool.state|float, states.sensor.downstairs_heat.state|float, 0]|max != None -%}            {{ [states.sensor.downstairs_cool.state|float, states.sensor.downstairs_heat.state|float, 0]|max }}          {%- else -%}            0        {%- endif -%}                        
       icon_template: >
-        {%- if states('sensor.downstairs_cool')|default(0) < states('sensor.downstairs_heat')|default(0) -%}            mdi:fire          {%- elif states('sensor.downstairs_cool')|default(0) > states('sensor.downstairs_heat')|default(0) -%}            mdi:snowflake        {%- endif -%}                
+        {%- if states(''''''''''''''''sensor.downstairs_cool'''''''''''''''')|default(0) < states(''''''''''''''''sensor.downstairs_heat'''''''''''''''')|default(0) -%}            mdi:fire          {%- elif states(''''''''''''''''sensor.downstairs_cool'''''''''''''''')|default(0) > states(''''''''''''''''sensor.downstairs_heat'''''''''''''''')|default(0) -%}            mdi:snowflake        {%- endif -%}                        
     upstairs_hvac_runtime:
       friendly_name: "Upstairs HVAC Runtime"
       unit_of_measurement: "h"
       value_template: >
-        {%- if [states.sensor.upstairs_cool.state|float, states.sensor.upstairs_heat.state|float, 0]|max != None -%}            {{ [states.sensor.upstairs_cool.state|float, states.sensor.upstairs_heat.state|float, 0]|max }}          {%- else -%}            0        {%- endif -%}                
+        {%- if [states.sensor.upstairs_cool.state|float, states.sensor.upstairs_heat.state|float, 0]|max != None -%}            {{ [states.sensor.upstairs_cool.state|float, states.sensor.upstairs_heat.state|float, 0]|max }}          {%- else -%}            0        {%- endif -%}                        
       icon_template: >
-        {%- if states('sensor.upstairs_cool')|default(0) < states('sensor.upstairs_heat')|default(0) -%}            mdi:fire          {%- elif states('sensor.upstairs_cool')|default(0) > states('sensor.upstairs_heat')|default(0) -%}            mdi:snowflake        {%- endif -%}                
+        {%- if states(''''''''''''''''sensor.upstairs_cool'''''''''''''''')|default(0) < states(''''''''''''''''sensor.upstairs_heat'''''''''''''''')|default(0) -%}            mdi:fire          {%- elif states(''''''''''''''''sensor.upstairs_cool'''''''''''''''')|default(0) > states(''''''''''''''''sensor.upstairs_heat'''''''''''''''')|default(0) -%}            mdi:snowflake        {%- endif -%}                        
     master_hvac_runtime:
       friendly_name: "Master HVAC Runtime"
       unit_of_measurement: "h"
       value_template: >
-        {%- if [states.sensor.master_cool.state|float, states.sensor.master_heat.state|float, 0]|max != None -%}            {{ [states.sensor.master_cool.state|float, states.sensor.master_heat.state|float, 0]|max }}          {%- else -%}            0        {%- endif -%}                
+        {%- if [states.sensor.master_cool.state|float, states.sensor.master_heat.state|float, 0]|max != None -%}            {{ [states.sensor.master_cool.state|float, states.sensor.master_heat.state|float, 0]|max }}          {%- else -%}            0        {%- endif -%}                        
       icon_template: >
-        {%- if states('sensor.master_cool')|default(0) < states('sensor.master_heat')|default(0) -%}            mdi:fire          {%- elif states('sensor.master_cool')|default(0) > states('sensor.master_heat')|default(0) -%}            mdi:snowflake        {%- endif -%}                
+        {%- if states(''''''''''''''''sensor.master_cool'''''''''''''''')|default(0) < states(''''''''''''''''sensor.master_heat'''''''''''''''')|default(0) -%}            mdi:fire          {%- elif states(''''''''''''''''sensor.master_cool'''''''''''''''')|default(0) > states(''''''''''''''''sensor.master_heat'''''''''''''''')|default(0) -%}            mdi:snowflake        {%- endif -%}                        
     wemopowerused:
       friendly_name: "Wemo Current Power"
       unit_of_measurement: "w"
       value_template: >
-        {%- if states.switch.wemoinsight.attributes.current_power_w != None -%}            {{(states.switch.wemoinsight.attributes|default({})).current_power_w|default(0)|round(2)}}          {%- else -%}            0        {%- endif -%}                
+        {%- if states.switch.wemoinsight.attributes.current_power_w != None -%}            {{(states.switch.wemoinsight.attributes|default({})).current_power_w|default(0)|round(2)}}          {%- else -%}            0        {%- endif -%}                        
     portfolioval:
       friendly_name: "Portfolio Value"
       unit_of_measurement: "$"
       value_template: >
-        {%- if states.input_number.portfoliovalue.state != None -%}            {{states.input_number.portfoliovalue.state|default(0)|round(2)}}          {%- else -%}            0        {%- endif -%}                
+        {%- if states.input_number.portfoliovalue.state != None -%}            {{states.input_number.portfoliovalue.state|default(0)|round(2)}}          {%- else -%}            0        {%- endif -%}                        
     portfoliochange:
       friendly_name: "Portfolio Change"
       unit_of_measurement: "$"
       value_template: >
-        {%- if states.input_number.portfoliochange.state != None -%}            {{states.input_number.portfoliochange.state|default(0)|round(2)}}          {%- else -%}            0        {%- endif -%}                
+        {%- if states.input_number.portfoliochange.state != None -%}            {{states.input_number.portfoliochange.state|default(0)|round(2)}}          {%- else -%}            0        {%- endif -%}                        
     portfoliochange2:
       friendly_name: "Portfolio Change (PC)"
       unit_of_measurement: "$"
       value_template: >
-        {{(states('sensor.personal_capital_investments')|float - states('sensor.portfolio_morning')|float)|round (2)}}                
+        {{(states(''''''''''''''''sensor.personal_capital_investments'''''''''''''''')|float - states(''''''''''''''''sensor.portfolio_morning'''''''''''''''')|float)|round (2)}}                        
     hvacmode:
       friendly_name: "HVAC Mode"
       value_template: >
-        {%- if states.climate.upstairs.attributes.operation == "heat" -%}            heat          {%- elif states.climate.downstairs.attributes.operation == "cool" -%}            cool        {%- endif -%}                
+        {%- if states.climate.upstairs.attributes.operation == "heat" -%}            heat          {%- elif states.climate.downstairs.attributes.operation == "cool" -%}            cool        {%- endif -%}                        
       icon_template: >
-        {%- if states.climate.upstairs.attributes.operation == "heat" -%}            mdi:fire          {%- elif states.climate.downstairs.attributes.operation == "cool" -%}            mdi:snowflake        {%- endif -%}                
+        {%- if states.climate.upstairs.attributes.operation == "heat" -%}            mdi:fire          {%- elif states.climate.downstairs.attributes.operation == "cool" -%}            mdi:snowflake        {%- endif -%}                        
     garagedoorbattery:
       friendly_name: "Garage Door Sensor Battery"
       unit_of_measurement: "%"
       value_template: >
-        {%- if states.zwave.garage_door_tilt_sensor != None -%}            {{ states.zwave.garage_door_tilt_sensor.attributes.battery_level }}          {%- else -%}            unknown        {%- endif -%}                
+        {%- if states.zwave.garage_door_tilt_sensor != None -%}            {{ states.zwave.garage_door_tilt_sensor.attributes.battery_level }}          {%- else -%}            unknown        {%- endif -%}                        
     downstairsthermoper:
       friendly_name: "Downstairs Thermostat"
       value_template: >
-        {%- if states.climate.downstairs != None -%}            {{ states.climate.downstairs.attributes.operation }}          {%- else -%}            unknown        {%- endif -%}                
+        {%- if states.climate.downstairs != None -%}            {{ states.climate.downstairs.attributes.operation }}          {%- else -%}            unknown        {%- endif -%}                        
       icon_template: >
-        {%- if states.climate.downstairs.attributes.operation == "heat" -%}            mdi:fire          {%- elif states.climate.downstairs.attributes.operation == "cool" -%}            mdi:snowflake          {%- else -%}            mdi:fan        {%- endif -%}                
+        {%- if states.climate.downstairs.attributes.operation == "heat" -%}            mdi:fire          {%- elif states.climate.downstairs.attributes.operation == "cool" -%}            mdi:snowflake          {%- else -%}            mdi:fan        {%- endif -%}                        
     upstairsthermoper:
       friendly_name: "Upstairs Thermostat"
       value_template: >
-        {%- if states.climate.upstairs != None -%}            {{ states.climate.upstairs.attributes.operation }}          {%- else -%}            unknown        {%- endif -%}                
+        {%- if states.climate.upstairs != None -%}            {{ states.climate.upstairs.attributes.operation }}          {%- else -%}            unknown        {%- endif -%}                        
       icon_template: >
-        {%- if states.climate.upstairs.attributes.operation == "heat" -%}            mdi:fire          {%- elif states.climate.upstairs.attributes.operation ==  "cool" -%}            mdi:snowflake          {%- else -%}            mdi:fan        {%- endif -%}                
+        {%- if states.climate.upstairs.attributes.operation == "heat" -%}            mdi:fire          {%- elif states.climate.upstairs.attributes.operation ==  "cool" -%}            mdi:snowflake          {%- else -%}            mdi:fan        {%- endif -%}                        
     masterthermoper:
       friendly_name: "Master Thermostat"
       value_template: >
-        {%- if states.climate.bedroom != None -%}            {{ states.climate.bedroom.attributes.operation }}          {%- else -%}            unknown        {%- endif -%}                
+        {%- if states.climate.bedroom != None -%}            {{ states.climate.bedroom.attributes.operation }}          {%- else -%}            unknown        {%- endif -%}                        
       icon_template: >
-        {%- if states.climate.bedroom.attributes.operation == "heat" -%}            mdi:fire          {%- elif states.climate.bedroom.attributes.operation ==  "cool" -%}            mdi:snowflake          {%- else -%}            mdi:fan        {%- endif -%}                
+        {%- if states.climate.bedroom.attributes.operation == "heat" -%}            mdi:fire          {%- elif states.climate.bedroom.attributes.operation ==  "cool" -%}            mdi:snowflake          {%- else -%}            mdi:fan        {%- endif -%}                        
     living_room:
       value_template: >
-        {%- if states.states.remote.livingroom != None -%}            {{ states.remote.livingroom.attributes.current_activity }}          {%- else -%}            NA        {%- endif -%}                
+        {%- if states.states.remote.livingroom != None -%}            {{ states.remote.livingroom.attributes.current_activity }}          {%- else -%}            NA        {%- endif -%}                        
     sonos_volume:
       value_template: >
-        {%- if states.media_player.family_room_2.attributes.volume_level != None -%}            {{ (states.media_player.family_room_2.attributes.volume_level|default(0) * 100) |int }}          {%- else -%}            NA        {%- endif -%}                
+        {%- if states.media_player.family_room_2.attributes.volume_level != None -%}            {{ (states.media_player.family_room_2.attributes.volume_level|default(0) * 100) |int }}          {%- else -%}            NA        {%- endif -%}                        
       friendly_name: 'Sonos Volume'
     leeoalarmstatus:
       friendly_name: "Leeo Alarm"
       value_template: >
-        {%- if states.input_boolean.leeoalarm.state == 'off' -%}             Off          {%- elif states.input_boolean.leeoalarm.state == 'on' -%}             Active          {%- elif states.input_boolean.leeoalarm.state == None -%}             unknown        {%- endif -%}                
+        {%- if states.input_boolean.leeoalarm.state == ''''''''''''''''off'''''''''''''''' -%}             Off          {%- elif states.input_boolean.leeoalarm.state == ''''''''''''''''on'''''''''''''''' -%}             Active          {%- elif states.input_boolean.leeoalarm.state == None -%}             unknown        {%- endif -%}                        
     pollen_level:
       friendly_name: 'Pollen Level'
       value_template: >
-        {{ state_attr('sensor.allergy_index_forecasted_average_2', 'rating') }}                
+        {{ state_attr(''''''''''''''''sensor.allergy_index_forecasted_average_2'''''''''''''''', ''''''''''''''''rating'''''''''''''''') }}                        
       entity_picture_template: >
-        {{ '/local/icons/' ~ state_attr('sensor.allergy_index_forecasted_average_2', 'rating').lower().replace('/', '-') ~ '.png'}}                
+        {{ ''''''''''''''''/local/icons/'''''''''''''''' ~ state_attr(''''''''''''''''sensor.allergy_index_forecasted_average_2'''''''''''''''', ''''''''''''''''rating'''''''''''''''').lower().replace(''''''''''''''''/'''''''''''''''', ''''''''''''''''-'''''''''''''''') ~ ''''''''''''''''.png''''''''''''''''}}                        
     cold_flu_risk:
       friendly_name: 'Cold & Flu Risk'
       value_template: >
-        {{ state_attr('sensor.cold__flu_forecasted_average_2', 'rating') }}                
+        {{ state_attr(''''''''''''''''sensor.cold__flu_forecasted_average_2'''''''''''''''', ''''''''''''''''rating'''''''''''''''') }}                        
       entity_picture_template: >
-        {{ '/local/icons/' ~ state_attr('sensor.cold__flu_forecasted_average_2', 'rating').lower().replace('/', '-') ~ '.png'}}                
+        {{ ''''''''''''''''/local/icons/'''''''''''''''' ~ state_attr(''''''''''''''''sensor.cold__flu_forecasted_average_2'''''''''''''''', ''''''''''''''''rating'''''''''''''''').lower().replace(''''''''''''''''/'''''''''''''''', ''''''''''''''''-'''''''''''''''') ~ ''''''''''''''''.png''''''''''''''''}}                        
     emulated_hue_names:
       friendly_name: "Emulated Hue Names"
       value_template: >
-        {% for item in states if item.attributes.emulated_hue_name|length > 0-%}            {%- if loop.first %}{% elif loop.last %}, and {% else %}, {% endif -%}            {{item.attributes.emulated_hue_name|title}}        {%- endfor -%}.                
+        {% for item in states if item.attributes.emulated_hue_name|length > 0-%}            {%- if loop.first %}{% elif loop.last %}, and {% else %}, {% endif -%}            {{item.attributes.emulated_hue_name|title}}        {%- endfor -%}.                        

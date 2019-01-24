@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Data_Model
 {
@@ -6,7 +7,7 @@ namespace Data_Model
     {
         public override List<MyYamlNode> nodes { get; set; }
 
-        public MyYamlSequenceNode(string name, int indentAmount) : base(name, indentAmount)
+        public MyYamlSequenceNode(string name, int indentAmount, MyYamlNode parent) : base(name, indentAmount, parent)
         {
         }
 
@@ -52,7 +53,14 @@ namespace Data_Model
 
             foreach (MyYamlNode node in nodes)
             {
-                if (node.name == "" && node is MyYamlScalarNode)
+                if (node.nodes != null)
+                MessageBox.Show("" + node.nodes.Count + " ___ " + node.nodes[0].name);
+
+                if (node.nodes != null && node.nodes.Count <= 1 && node.name == "" && node is MyYamlScalarNode)
+                {
+                    text += indent + "- " + node.ToString();
+                }
+                else if (node.name == "" && node is MyYamlScalarNode)
                 {
                     indent = new string(' ', indentAmount + 2);
                     text += indent + "- " + node.ToString();
@@ -63,7 +71,6 @@ namespace Data_Model
                     text += indent + "- " + node.ToString().Substring((indentAmount + 2), node.ToString().Length - (indentAmount + 2));
                 }
             }
-
             return text;
         }
     }

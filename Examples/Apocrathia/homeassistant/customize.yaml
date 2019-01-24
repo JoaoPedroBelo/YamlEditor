@@ -25,7 +25,7 @@ group.all_sensors:
 sensor.dark_sky_summary:
   friendly_name: Weather
 device_tracker.2018_ford_escape:
-  friendly_name: Ian's Car
+  friendly_name: Ian''''s Car
   icon: mdi:car
 group.front_porch_lights:
   icon: mdi:lightbulb

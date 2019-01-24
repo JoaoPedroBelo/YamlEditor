@@ -8,10 +8,10 @@ sensor:
 - platform: ring
   entity_namespace: ring
   monitored_conditions:
-    - last_activity
-    - last_ding
-    - last_motion
-    - volume
+  - last_activity
+  - last_ding
+  - last_motion
+  - volume
 camera:
 - platform: ring
   entity_namespace: ring

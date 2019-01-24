@@ -6,7 +6,7 @@ namespace Data_Model
     {
         public override List<MyYamlNode> nodes { get; set; }
 
-        public MyYamlMappingNode(string name, int indentAmount) : base(name, indentAmount)
+        public MyYamlMappingNode(string name, int indentAmount, MyYamlNode parent) : base(name, indentAmount, parent)
         {
         }
 

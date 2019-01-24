@@ -1,5 +1,5 @@
 climate.downstairs:
-  friendly_nam: Downstairs
+  friendly_name: Downstairs
   entity_picture: /local/icons/Ecobee.png
 climate.upstairs:
   friendly_name: Upstairs
@@ -11,16 +11,16 @@ input_select.hvacmode:
   icon: mdi:air-conditioner
 device_tracker.myiphone:
   icon: mdi:cellphone-iphone
-  friendly_name: Alok's iPhone
+  friendly_name: Alok''''''''''''''''''''''''''''''''s iPhone
 device_tracker.alokphone_alokphone:
   icon: mdi:cellphone-iphone
-  friendly_name: Alok's iPhone MQTT
+  friendly_name: Alok''''''''''''''''''''''''''''''''s iPhone MQTT
 device_tracker.rashmisiphone:
   icon: mdi:cellphone-iphone
-  friendly_name: Rashmi's iPhone
+  friendly_name: Rashmi''''''''''''''''''''''''''''''''s iPhone
 device_tracker.rashmiphone_rashmiphone:
   icon: mdi:cellphone-iphone
-  friendly_name: Rashmi's iPhone MQTT
+  friendly_name: Rashmi''''''''''''''''''''''''''''''''s iPhone MQTT
 device_tracker.alokdelllatitude:
   icon: mdi:laptop-windows
   friendly_name: Dell Laptop
@@ -116,7 +116,7 @@ sensor.portfoliochange:
   icon: mdi:currency-usd
   templates:
     icon_color: >
-      if (state < 0) return 'rgb(178,34,34)'; else return 'rgb(50,205,50)';                  
+      if (state < 0) return ''''''''''''''''''''''''''''''''rgb(178,34,34)''''''''''''''''''''''''''''''''; else return ''''''''''''''''''''''''''''''''rgb(50,205,50)'''''''''''''''''''''''''''''''';                              
 group.all_automations:
   hidden: false
   friendly_name: 'Automations'
@@ -181,9 +181,9 @@ input_boolean.startrecording:
 switch.driveway:
   templates:
     icon_color: >
-      if (state === 'on') return 'rgb(251, 210, 41)'; return 'rgb(54, 95, 140)';                  
+      if (state === ''''''''''''''''''''''''''''''''on'''''''''''''''''''''''''''''''') return ''''''''''''''''''''''''''''''''rgb(251, 210, 41)''''''''''''''''''''''''''''''''; return ''''''''''''''''''''''''''''''''rgb(54, 95, 140)'''''''''''''''''''''''''''''''';                              
     icon: >
-      if (state === 'on') return 'mdi:lightbulb-on'; return 'mdi:lightbulb';                  
+      if (state === ''''''''''''''''''''''''''''''''on'''''''''''''''''''''''''''''''') return ''''''''''''''''''''''''''''''''mdi:lightbulb-on''''''''''''''''''''''''''''''''; return ''''''''''''''''''''''''''''''''mdi:lightbulb'''''''''''''''''''''''''''''''';                              
   emulated_hue_hidden: false
   emulated_hue_name: "Driveway Light"
   friendly_name: "Driveway Light"
@@ -191,9 +191,9 @@ switch.driveway:
 switch.wemoporch:
   templates:
     icon_color: >
-      if (state === 'on') return 'rgb(251, 210, 41)'; return 'rgb(54, 95, 140)';                  
+      if (state === ''''''''''''''''''''''''''''''''on'''''''''''''''''''''''''''''''') return ''''''''''''''''''''''''''''''''rgb(251, 210, 41)''''''''''''''''''''''''''''''''; return ''''''''''''''''''''''''''''''''rgb(54, 95, 140)'''''''''''''''''''''''''''''''';                              
     icon: >
-      if (state === 'on') return 'mdi:lightbulb-on'; return 'mdi:lightbulb';                  
+      if (state === ''''''''''''''''''''''''''''''''on'''''''''''''''''''''''''''''''') return ''''''''''''''''''''''''''''''''mdi:lightbulb-on''''''''''''''''''''''''''''''''; return ''''''''''''''''''''''''''''''''mdi:lightbulb'''''''''''''''''''''''''''''''';                              
   emulated_hue_hidden: false
   emulated_hue_name: "Porch Lights"
   friendly_name: "Porch Lights"
@@ -207,9 +207,9 @@ input_boolean.tv:
 input_boolean.tvtime:
   templates:
     icon: >
-      if (state === 'on') return 'mdi:television-classic'; return 'mdi:television-classic-off';                  
+      if (state === ''''''''''''''''''''''''''''''''on'''''''''''''''''''''''''''''''') return ''''''''''''''''''''''''''''''''mdi:television-classic''''''''''''''''''''''''''''''''; return ''''''''''''''''''''''''''''''''mdi:television-classic-off'''''''''''''''''''''''''''''''';                              
     icon_color: >
-      if (state === 'on') return 'rgb(251, 210, 41)'; return 'rgb(54, 95, 140)';                  
+      if (state === ''''''''''''''''''''''''''''''''on'''''''''''''''''''''''''''''''') return ''''''''''''''''''''''''''''''''rgb(251, 210, 41)''''''''''''''''''''''''''''''''; return ''''''''''''''''''''''''''''''''rgb(54, 95, 140)'''''''''''''''''''''''''''''''';                              
 cover.garagedoor:
   homebridge_cover_type: garage_door
 light.kitchen_lights:

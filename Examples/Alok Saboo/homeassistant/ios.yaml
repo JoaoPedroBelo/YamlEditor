@@ -1,6 +1,6 @@
 push:
   categories:
-  - namefdgdhg: Abode Alarm
+  - name: Abode Alarm
     identifier: 'abode_alarm'
     actions:
     - identifier: 'SOUND_ALARM'

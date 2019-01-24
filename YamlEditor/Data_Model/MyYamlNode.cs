@@ -13,14 +13,16 @@ namespace Data_Model
         }
         public int indentAmount { get; private set; }
         public abstract List<MyYamlNode> nodes { get; set; }
+        public MyYamlNode parent { get; set; }
 
         public event UpdateEventHandler OnUpdate;
 
-        public MyYamlNode(string name, int indentAmount)
+        public MyYamlNode(string name, int indentAmount, MyYamlNode parent)
         {
             this.name = name;
             this.indentAmount = indentAmount;
             this.nodes = new List<MyYamlNode>();
+            this.parent = parent;
         }
 
         public abstract void AddChildren(MyYamlNode child);

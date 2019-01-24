@@ -7,13 +7,13 @@ group:
     name: Vacation
     control: hidden
     entities:
-      - input_boolean.vacation_ian
-      - input_boolean.vacation_aimee
+    - input_boolean.vacation_ian
+    - input_boolean.vacation_aimee
   network_phones:
     name: Phones
     entities:
-      - device_tracker.network_aimees_iphone
-      - device_tracker.network_ians_iphone
+    - device_tracker.network_aimees_iphone
+    - device_tracker.network_ians_iphone
 binary_sensor:
 - platform: bayesian
   prior: 0.50
@@ -71,8 +71,8 @@ automation:
   trigger:
   - platform: state
     entity_id:
-      - device_tracker.network_ians_iphone
-      - device_tracker.network_aimees_iphone
+    - device_tracker.network_ians_iphone
+    - device_tracker.network_aimees_iphone
     to: 'home'
   condition:
     condition: or
@@ -88,7 +88,7 @@ automation:
     data:
       home_mode: home
       structure:
-        - Percivale
+      - Percivale
   - service: alarm_control_panel.alarm_disarm
     data:
       entity_id: alarm_control_panel.home
@@ -99,8 +99,8 @@ automation:
   trigger:
   - platform: state
     entity_id:
-      - device_tracker.network_ians_iphone
-      - device_tracker.network_aimees_iphone
+    - device_tracker.network_ians_iphone
+    - device_tracker.network_aimees_iphone
     to: 'not_home'
   condition:
     condition: and
@@ -116,7 +116,7 @@ automation:
     data:
       home_mode: away
       structure:
-        - Percivale
+      - Percivale
   - service: alarm_control_panel.alarm_arm_away
     data:
       entity_id: alarm_control_panel.home
@@ -127,13 +127,13 @@ automation:
   trigger:
   - platform: state
     entity_id:
-      - binary_sensor.vacancy
-      - binary_sensor.occupancy
+    - binary_sensor.vacancy
+    - binary_sensor.occupancy
   action:
   - service: notify.notify
     data:
       message: >
-        Bayesian Sensor Triggered: {{ trigger.entity_id }}                        
+        Bayesian Sensor Triggered: {{ trigger.entity_id }}                                        
 scene:
 - name: Home
   entities:
@@ -151,7 +151,7 @@ script:
       data:
         home_mode: away
         structure:
-          - Percivale
+        - Percivale
     - service: alarm_control_panel.alarm_arm_away
       data:
         entity_id: alarm_control_panel.home
@@ -163,7 +163,7 @@ script:
       data:
         home_mode: home
         structure:
-          - Percivale
+        - Percivale
     - service: alarm_control_panel.alarm_disarm
       data:
         entity_id: alarm_control_panel.home

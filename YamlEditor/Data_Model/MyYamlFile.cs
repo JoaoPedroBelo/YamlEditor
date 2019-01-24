@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using YamlDotNet.RepresentationModel;
-using Logging;
 using System.Windows.Forms;
 
 namespace Data_Model
@@ -94,7 +93,7 @@ namespace Data_Model
                     if (scalar.Value.Contains("'"))
                         scalar.Value = scalar.Value.Replace("'", "''");
 
-                    nodes.Add(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount));
+                    nodes.Add(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount, null));
 
                     if (scalar.Tag == "!include")
                     {
@@ -115,7 +114,7 @@ namespace Data_Model
                 }
                 else if (child.Value is YamlSequenceNode)
                 {
-                    nodes.Add(MyNodeFactory.CreateMyYamlSequenceNode(key.Value, indentAmount));
+                    nodes.Add(MyNodeFactory.CreateMyYamlSequenceNode(key.Value, indentAmount, null));
 
                     indentAmount += 2;
                     MyYamlSequenceNode parent = (MyYamlSequenceNode)nodes[nodes.Count - 1];
@@ -124,7 +123,7 @@ namespace Data_Model
                 }
                 else if (child.Value is YamlMappingNode)
                 {
-                    nodes.Add(MyNodeFactory.CreateMyYamlMappingNode(key.Value, indentAmount));
+                    nodes.Add(MyNodeFactory.CreateMyYamlMappingNode(key.Value, indentAmount, null));
 
                     indentAmount += 2;
                     MyYamlMappingNode parent = (MyYamlMappingNode)nodes[nodes.Count - 1];
@@ -146,13 +145,13 @@ namespace Data_Model
 
                 if (child is YamlMappingNode)
                 {
-                    nodes.Add(MyNodeFactory.CreateMyYamlMappingNode("", indentAmount));
+                    nodes.Add(MyNodeFactory.CreateMyYamlMappingNode("", indentAmount, null));
                     MyYamlMappingNode root = (MyYamlMappingNode)nodes[nodes.Count - 1];
 
-                    root.AddChildren(MyNodeFactory.CreateMyYamlSequenceNode("", indentAmount));
+                    root.AddChildren(MyNodeFactory.CreateMyYamlSequenceNode("", indentAmount, root));
                     MyYamlSequenceNode first_sequence = (MyYamlSequenceNode)root.nodes[root.nodes.Count - 1];
 
-                    first_sequence.AddChildren(MyNodeFactory.CreateMyYamlMappingNode("", indentAmount));
+                    first_sequence.AddChildren(MyNodeFactory.CreateMyYamlMappingNode("", indentAmount, first_sequence));
 
                     indentAmount += 2;
                     MyYamlMappingNode parent = (MyYamlMappingNode)first_sequence.nodes[first_sequence.nodes.Count - 1];
@@ -188,7 +187,7 @@ namespace Data_Model
                     if (scalar.Value.Contains("'"))
                         scalar.Value = scalar.Value.Replace("'", "''");
 
-                    parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount));
+                    parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount, parent));
 
                     if (scalar.Tag == "!include")
                     {
@@ -209,7 +208,7 @@ namespace Data_Model
                 }
                 else if (child.Value is YamlSequenceNode)
                 {
-                    parent.AddChildren(MyNodeFactory.CreateMyYamlSequenceNode(key.Value, indentAmount));
+                    parent.AddChildren(MyNodeFactory.CreateMyYamlSequenceNode(key.Value, indentAmount, parent));
 
                     indentAmount += 2;
                     MyYamlSequenceNode new_parent = (MyYamlSequenceNode)parent.nodes[parent.nodes.Count - 1];
@@ -218,7 +217,7 @@ namespace Data_Model
                 }
                 else if (child.Value is YamlMappingNode)
                 {
-                    parent.AddChildren(MyNodeFactory.CreateMyYamlMappingNode(key.Value, indentAmount));
+                    parent.AddChildren(MyNodeFactory.CreateMyYamlMappingNode(key.Value, indentAmount, parent));
 
                     indentAmount += 2;
                     MyYamlMappingNode new_parent = (MyYamlMappingNode)parent.nodes[parent.nodes.Count - 1];
@@ -236,18 +235,18 @@ namespace Data_Model
                 if (child is YamlScalarNode)
                 {
                     var scalar = child as YamlScalarNode;
-                    parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode("", scalar.Tag, scalar.Value, scalar.Style, indentAmount));
+                    parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode("", scalar.Tag, scalar.Value, scalar.Style, indentAmount, parent));
                 }
                 else if (child is YamlSequenceNode)
                 {
-                    parent.AddChildren(MyNodeFactory.CreateMyYamlSequenceNode("", indentAmount));
+                    parent.AddChildren(MyNodeFactory.CreateMyYamlSequenceNode("", indentAmount, parent));
 
                     MyYamlSequenceNode new_parent = (MyYamlSequenceNode)parent.nodes[parent.nodes.Count - 1];
                     LoadChildren(child as YamlSequenceNode, new_parent);
                 }
                 else if (child is YamlMappingNode)
                 {
-                    parent.AddChildren(MyNodeFactory.CreateMyYamlMappingNode("", indentAmount));
+                    parent.AddChildren(MyNodeFactory.CreateMyYamlMappingNode("", indentAmount, parent));
 
                     MyYamlMappingNode new_parent = (MyYamlMappingNode)parent.nodes[parent.nodes.Count - 1];
                     LoadChildren(child as YamlMappingNode, new_parent);

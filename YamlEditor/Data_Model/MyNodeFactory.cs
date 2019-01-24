@@ -4,19 +4,19 @@ namespace Data_Model
 {
     public static class MyNodeFactory
     {
-        public static MyYamlMappingNode CreateMyYamlMappingNode(string name, int indentAmount)
+        public static MyYamlMappingNode CreateMyYamlMappingNode(string name, int indentAmount, MyYamlNode parent)
         {
-            return new MyYamlMappingNode(name, indentAmount);
+            return new MyYamlMappingNode(name, indentAmount, parent);
         }
 
-        public static MyYamlSequenceNode CreateMyYamlSequenceNode(string name, int indentAmount)
+        public static MyYamlSequenceNode CreateMyYamlSequenceNode(string name, int indentAmount, MyYamlNode parent)
         {
-            return new MyYamlSequenceNode(name, indentAmount);
+            return new MyYamlSequenceNode(name, indentAmount, parent);
         }
 
-        public static MyYamlScalarNode CreateMyYamlScalarNode(string name, string tag, string value, ScalarStyle style, int indentAmount)
+        public static MyYamlScalarNode CreateMyYamlScalarNode(string name, string tag, string value, ScalarStyle style, int indentAmount, MyYamlNode parent)
         {
-            return new MyYamlScalarNode(name, tag, value, style, indentAmount);
+            return new MyYamlScalarNode(name, tag, value, style, indentAmount, parent);
         }
     }
 }

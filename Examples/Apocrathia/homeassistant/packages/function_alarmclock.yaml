@@ -3,10 +3,10 @@ group:
     name: Alarm Clock Settings
     control: hidden
     entities:
-      - automation.function_wakeup_light_bedroom
-      - automation.function_wakeup_apple_tv
-      - input_datetime.wakeup_time
-      - input_number.wakeup_duration
+    - automation.function_wakeup_light_bedroom
+    - automation.function_wakeup_apple_tv
+    - input_datetime.wakeup_time
+    - input_number.wakeup_duration
 input_datetime:
   wakeup_time:
     name: Wakeup Time
@@ -28,12 +28,12 @@ sensor:
       friendly_name: Wakeup Time
       entity_id: input_datetime.wakeup_time
       value_template: >
-        {{ states.input_datetime.wakeup_time.attributes.timestamp | int | timestamp_custom("%H:%M",False) }}                        
+        {{ states.input_datetime.wakeup_time.attributes.timestamp | int | timestamp_custom("%H:%M",False) }}                                        
     wakeup_alarm_start_time:
       entity_id: input_datetime.wakeup_time, input_number.wakeup_duration
       friendly_name: Alarm Clock Start
       value_template: >
-        {{ ((states.input_datetime.wakeup_time.attributes.timestamp | int) - (states.input_number.wakeup_duration.state | int * 60)) | timestamp_custom("%H:%M",False) }}                        
+        {{ ((states.input_datetime.wakeup_time.attributes.timestamp | int) - (states.input_number.wakeup_duration.state | int * 60)) | timestamp_custom("%H:%M",False) }}                                        
 automation:
 - id: function_wakeup_bedroom_light
   alias: 'Function - Wakeup - Bedroom Light'
@@ -41,7 +41,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {{ states.sensor.time.state == states.sensor.wakeup_alarm_start_time.state }}                  
+      {{ states.sensor.time.state == states.sensor.wakeup_alarm_start_time.state }}                              
   condition:
     condition: state
     entity_id: binary_sensor.workday
@@ -53,14 +53,14 @@ automation:
       profile: energize
     data_template:
       transition: >
-        {{ states.input_number.wakeup_duration.state | multiply(60) | int }}                        
+        {{ states.input_number.wakeup_duration.state | multiply(60) | int }}                                        
 - id: function_wakeup_apple_tv
   alias: 'Function - Wakeup - Apple TV'
   initial_state: 'on'
   trigger:
   - platform: template
     value_template: >
-      {{ states.sensor.time.state == states.sensor.wakeup_alarm_start_time.state }}                  
+      {{ states.sensor.time.state == states.sensor.wakeup_alarm_start_time.state }}                              
   condition:
     condition: state
     entity_id: binary_sensor.workday
@@ -73,7 +73,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {{ states.sensor.time.state == states.sensor.wakeup_alarm_start_time.state }}                  
+      {{ states.sensor.time.state == states.sensor.wakeup_alarm_start_time.state }}                              
   condition:
     condition: state
     entity_id: binary_sensor.workday
@@ -82,7 +82,7 @@ automation:
     service: notify.notify
     data:
       message: >
-        Alarm Clock Test Triggered: {{ states('sensor.time') }}                        
+        Alarm Clock Test Triggered: {{ states(''''sensor.time'''') }}                                        
 script:
   function_wakeup_apple_tv:
     alias: 'Wakeup - Apple TV'
@@ -94,57 +94,57 @@ script:
       data:
         entity_id: remote.master_bedroom_apple_tv
         command:
-          - menu
+        - menu
     - delay:
         seconds: 15
     - service: remote.send_command
       data:
         entity_id: remote.master_bedroom_apple_tv
         command:
-          - top_menu
+        - top_menu
     - delay:
         seconds: 1
     - service: remote.send_command
       data:
         entity_id: remote.master_bedroom_apple_tv
         command:
-          - top_menu
+        - top_menu
     - delay:
         seconds: 1
     - service: remote.send_command
       data:
         entity_id: remote.master_bedroom_apple_tv
         command:
-          - top_menu
+        - top_menu
     - service: remote.send_command
       data:
         entity_id: remote.master_bedroom_apple_tv
         command:
-          - select
+        - select
     - delay:
         seconds: 15
     - service: remote.send_command
       data:
         entity_id: remote.master_bedroom_apple_tv
         command:
-          - select
+        - select
     - delay:
         seconds: 5
     - service: remote.send_command
       data:
         entity_id: remote.master_bedroom_apple_tv
         command:
-          - down
-          - right
-          - right
-          - right
-          - right
-          - right
-          - select
+        - down
+        - right
+        - right
+        - right
+        - right
+        - right
+        - select
     - delay:
         seconds: 15
     - service: remote.send_command
       data:
         entity_id: remote.master_bedroom_apple_tv
         command:
-          - select
+        - select

@@ -28,7 +28,7 @@ homeassistant:
     climate.wink_percivale_downstairs_thermostat:
       hidden: true
   customize_glob:
-    light.wink_*:
+    "light.wink_*":
       hidden: true
 wink:
   local_control: false

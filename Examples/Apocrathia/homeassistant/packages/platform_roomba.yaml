@@ -10,14 +10,14 @@ group:
   roombas:
     name: Roombas
     entities:
-      - vacuum.roomba_upstairs
-      - vacuum.roomba_downstairs
+    - vacuum.roomba_upstairs
+    - vacuum.roomba_downstairs
 switch:
 - platform: template
   switches:
     roomba_upstairs:
       friendly_name: "Upstairs Roomba"
-      value_template: "{{ is_state('vacuum.roomba_upstairs', 'on') }}"
+      value_template: "{{ is_state(''''vacuum.roomba_upstairs'''', ''''on'''') }}"
       turn_on:
         service: 'vacuum.start_pause'
         data:
@@ -27,10 +27,10 @@ switch:
         data:
           entity_id: 'vacuum.roomba_upstairs'
       icon_template: >
-        {% if is_state('vacuum.roomba_upstairs', 'on') %}            mdi:broom          {% else %}            mdi:robot-vacuum        {% endif %}                
+        {% if is_state(''''vacuum.roomba_upstairs'''', ''''on'''') %}            mdi:broom          {% else %}            mdi:robot-vacuum        {% endif %}                                
     roomba_downstairs:
       friendly_name: "Downstairs Roomba"
-      value_template: "{{ is_state('vacuum.roomba_downstairs', 'on') }}"
+      value_template: "{{ is_state(''''vacuum.roomba_downstairs'''', ''''on'''') }}"
       turn_on:
         service: 'vacuum.start_pause'
         data:
@@ -40,49 +40,49 @@ switch:
         data:
           entity_id: 'vacuum.roomba_downstairs'
       icon_template: >
-        {% if is_state('vacuum.roomba_downstairs', 'on') %}            mdi:broom          {% else %}            mdi:robot-vacuum        {% endif %}                
+        {% if is_state(''''vacuum.roomba_downstairs'''', ''''on'''') %}            mdi:broom          {% else %}            mdi:robot-vacuum        {% endif %}                                
 vacuum:
 - platform: mqtt
   name: roomba_upstairs
   supported_features:
-    - turn_on
-    - turn_off
-    - pause
-    - stop
-    - return_home
-    - battery
-    - status
-    - clean_spot
-    - send_command
+  - turn_on
+  - turn_off
+  - pause
+  - stop
+  - return_home
+  - battery
+  - status
+  - clean_spot
+  - send_command
   command_topic: "vacuum/upstairs/command"
   battery_level_topic: "vacuum/upstairs/state"
-  battery_level_template: "{{ value_json['battery_level'] }}"
+  battery_level_template: "{{ value_json[''''battery_level''''] }}"
   charging_topic: "vacuum/upstairs/state"
-  charging_template: "{{ value_json['charging'] }}"
+  charging_template: "{{ value_json[''''charging''''] }}"
   cleaning_topic: "vacuum/upstairs/state"
-  cleaning_template: "{{ value_json['cleaning'] }}"
+  cleaning_template: "{{ value_json[''''cleaning''''] }}"
   docked_topic: "vacuum/upstairs/state"
-  docked_template: "{{ value_json['docked'] }}"
+  docked_template: "{{ value_json[''''docked''''] }}"
   send_command_topic: 'vacuum/upstairs/send_command'
 - platform: mqtt
   name: roomba_downstairs
   supported_features:
-    - turn_on
-    - turn_off
-    - pause
-    - stop
-    - return_home
-    - battery
-    - status
-    - clean_spot
-    - send_command
+  - turn_on
+  - turn_off
+  - pause
+  - stop
+  - return_home
+  - battery
+  - status
+  - clean_spot
+  - send_command
   command_topic: "vacuum/downstairs/command"
   battery_level_topic: "vacuum/downstairs/state"
-  battery_level_template: "{{ value_json['battery_level'] }}"
+  battery_level_template: "{{ value_json[''''battery_level''''] }}"
   charging_topic: "vacuum/downstairs/state"
-  charging_template: "{{ value_json['charging'] }}"
+  charging_template: "{{ value_json[''''charging''''] }}"
   cleaning_topic: "vacuum/downstairs/state"
-  cleaning_template: "{{ value_json['cleaning'] }}"
+  cleaning_template: "{{ value_json[''''cleaning''''] }}"
   docked_topic: "vacuum/downstairs/state"
-  docked_template: "{{ value_json['docked'] }}"
+  docked_template: "{{ value_json[''''docked''''] }}"
   send_command_topic: 'vacuum/downstairs/send_command'

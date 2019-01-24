@@ -63,11 +63,11 @@
       friendly_name: Garage Door Open
       device_class: opening
       value_template: >
-        {% if states.sensor.garage_door_tilt_sensor_alarm_level != None %}            {{ is_state('sensor.garage_door_tilt_sensor_alarm_level', '255') }}          {% else %}            unknown        {% endif %}                
+        {% if states.sensor.garage_door_tilt_sensor_alarm_level != None %}            {{ is_state(''''''''''''''''sensor.garage_door_tilt_sensor_alarm_level'''''''''''''''', ''''''''''''''''255'''''''''''''''') }}          {% else %}            unknown        {% endif %}                        
     television:
       friendly_name: TV
       value_template: >
-        {{states('media_player.family_room_2')=='playing' and state_attr('media_player.family_room_2','source')=='TV'}}                
+        {{states(''''''''''''''''media_player.family_room_2'''''''''''''''')==''''''''''''''''playing'''''''''''''''' and state_attr(''''''''''''''''media_player.family_room_2'''''''''''''''',''''''''''''''''source'''''''''''''''')==''''''''''''''''TV''''''''''''''''}}                        
 - platform: hikvision
   host: 192.168.2.91
   ssl: false

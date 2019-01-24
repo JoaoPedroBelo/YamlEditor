@@ -3,9 +3,9 @@ group:
     name: Morning Settings
     control: hidden
     entities:
-      - input_datetime.morning
-      - input_number.morning_advance
-      - sensor.morning_start
+    - input_datetime.morning
+    - input_number.morning_advance
+    - sensor.morning_start
 input_datetime:
   morning:
     name: Morning
@@ -27,12 +27,12 @@ sensor:
       friendly_name: Morning
       entity_id: input_datetime.morning
       value_template: >
-        {{ states.input_datetime.morning.attributes.timestamp | int | timestamp_custom("%H:%M",False) }}                        
+        {{ states.input_datetime.morning.attributes.timestamp | int | timestamp_custom("%H:%M",False) }}                                        
     morning_start:
       friendly_name: Morning Start
       entity_id: input_datetime.morning, input_number.morning_advance
       value_template: >
-        {{ ((states.input_datetime.morning.attributes.timestamp | int) - (states.input_number.morning_advance.state | int * 60)) | timestamp_custom("%H:%M",False) }}                        
+        {{ ((states.input_datetime.morning.attributes.timestamp | int) - (states.input_number.morning_advance.state | int * 60)) | timestamp_custom("%H:%M",False) }}                                        
 automation:
 - id: master_bedroom_lights_morning
   alias: "Routine - Morning - Master Bedroom Lights"
@@ -40,8 +40,8 @@ automation:
   trigger:
   - platform: state
     entity_id:
-      - device_tracker.network_ians_iphone
-      - device_tracker.network_aimees_iphone
+    - device_tracker.network_ians_iphone
+    - device_tracker.network_aimees_iphone
     to: 'not_home'
   condition:
     condition: and
@@ -62,7 +62,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {{ states.sensor.time.state == states.sensor.wakeup_alarm_start_time.state }}                  
+      {{ states.sensor.time.state == states.sensor.wakeup_alarm_start_time.state }}                              
   condition:
     condition: state
     entity_id: binary_sensor.workday

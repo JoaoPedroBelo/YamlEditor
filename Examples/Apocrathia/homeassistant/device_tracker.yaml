@@ -5,4 +5,4 @@
   username: !secret automatic_username
   password: !secret automatic_password
   devices:
-    - 2018 Ford Escape
+  - 2018 Ford Escape

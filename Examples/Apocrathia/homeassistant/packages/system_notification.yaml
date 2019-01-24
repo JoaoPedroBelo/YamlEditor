@@ -19,7 +19,7 @@ automation:
   - service: notify.notify
     data_template:
       message: >
-        Home Assistant has discovered a new device: {{trigger.event.data.entity_id}}                        
+        Home Assistant has discovered a new device: {{trigger.event.data.entity_id}}                                        
       title: New Device
 - id: system_notification_restart
   alias: 'System - Notification - Home Assistant Restart'
@@ -37,13 +37,13 @@ automation:
   trigger:
     platform: template
     value_template: >
-      {{ states.sensor.ssl_certificate_expiry.state | int  <= 14 }}                  
+      {{ states.sensor.ssl_certificate_expiry.state | int  <= 14 }}                              
   condition:
     condition: template
     value_template: >
-      {{ states.sensor.ssl_certificate_expiry.state != "unknown" }}                  
+      {{ states.sensor.ssl_certificate_expiry.state != "unknown" }}                              
   action:
     service: notify.notify
     data_template:
       message: >
-        Home Assistant's certificate expires in {{ states.sensor.ssl_certificate_expiry.state }} days.                        
+        Home Assistant''''s certificate expires in {{ states.sensor.ssl_certificate_expiry.state }} days.                                        

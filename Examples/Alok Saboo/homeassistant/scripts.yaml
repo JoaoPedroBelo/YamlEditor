@@ -92,24 +92,24 @@ sonos_say:
   sequence:
   - service: media_player.sonos_snapshot
     data_template:
-      entity_id: "{{ sonos_entity|default('media_player.livingroomsonos') }}"
+      entity_id: "{{ sonos_entity|default(''''''''''''''''media_player.livingroomsonos'''''''''''''''') }}"
   - service: media_player.sonos_unjoin
     data_template:
-      entity_id: "{{ sonos_entity|default('media_player.livingroomsonos') }}"
+      entity_id: "{{ sonos_entity|default(''''''''''''''''media_player.livingroomsonos'''''''''''''''') }}"
   - service: media_player.volume_set
     data_template:
-      entity_id: "{{ sonos_entity|default('media_player.livingroomsonos') }}"
+      entity_id: "{{ sonos_entity|default(''''''''''''''''media_player.livingroomsonos'''''''''''''''') }}"
       volume_level: "{{ volume|default(0.5) }}"
   - service: tts.google_say
     data_template:
-      entity_id: "{{ sonos_entity|default('media_player.livingroomsonos') }}"
+      entity_id: "{{ sonos_entity|default(''''''''''''''''media_player.livingroomsonos'''''''''''''''') }}"
       message: "{{ message }}"
-  - delay: "{{ delay|default('00:00:00') }}"
-  - wait_template: "{{ is_state(sonos_entity|default('media_player.livingroomsonos'), 'playing') }}"
+  - delay: "{{ delay|default(''''''''''''''''00:00:00'''''''''''''''') }}"
+  - wait_template: "{{ is_state(sonos_entity|default(''''''''''''''''media_player.livingroomsonos''''''''''''''''), ''''''''''''''''playing'''''''''''''''') }}"
     timeout: '00:00:05'
   - service: media_player.sonos_restore
     data_template:
-      entity_id: "{{ sonos_entity|default('media_player.livingroomsonos') }}"
+      entity_id: "{{ sonos_entity|default(''''''''''''''''media_player.livingroomsonos'''''''''''''''') }}"
 notificationgaragedoor:
   alias: 'Garage Door Open'
   sequence:
@@ -163,7 +163,7 @@ playradio:
     data_template:
       entity_id: media_player.livingroomsonos
       media_content_id: >
-        {% if station == 'golden_oldies' %}            x-sonosapi-radio:STATION%3afeatured%5e-%5eGolden%20Oldies%5e-%5ehindi?sid=164&flags=8236&sn=29          {% elif station == 'party' %}            x-sonosapi-radio:STATION%3afeatured%5e-%5eParty%5e-%5ehindi?sid=164&flags=8236&sn=29          {% elif station == 'chartbusters' %}            x-sonosapi-radio:STATION%3afeatured%5e-%5eChartbusters%5e-%5ehindi?sid=164&flags=8236&sn=29          {% elif station == 'flashback' %}            x-sonosapi-radio:STATION%3afeatured%5e-%5eFlashback%5e-%5ehindi?sid=164&flags=8236&sn=29          {% elif station == 'bollywood_instrumental' %}            x-rincon-mp3radio://123.176.41.8:8532          {% elif station == 'bollywood_radio_and_beyond' %}            x-rincon-mp3radio://96.31.83.86:8084          {% elif station == 'npr' %}            x-rincon-mp3radio://nprdmp-live01-mp3.akacast.akamaistream.net/7/998/364916/v1/npr.akacast.akamaistream.net/nprdmp_live01_mp3          {% elif station == 'wabe_news' %}            x-rincon-mp3radio://pba-ice.streamguys.org:80/news          {% elif station == 'wabe' %}            x-rincon-mp3radio://pba-ice.streamguys.org:80/wabe        {% endif %}                
+        {% if station == ''''''''''''''''golden_oldies'''''''''''''''' %}            x-sonosapi-radio:STATION%3afeatured%5e-%5eGolden%20Oldies%5e-%5ehindi?sid=164&flags=8236&sn=29          {% elif station == ''''''''''''''''party'''''''''''''''' %}            x-sonosapi-radio:STATION%3afeatured%5e-%5eParty%5e-%5ehindi?sid=164&flags=8236&sn=29          {% elif station == ''''''''''''''''chartbusters'''''''''''''''' %}            x-sonosapi-radio:STATION%3afeatured%5e-%5eChartbusters%5e-%5ehindi?sid=164&flags=8236&sn=29          {% elif station == ''''''''''''''''flashback'''''''''''''''' %}            x-sonosapi-radio:STATION%3afeatured%5e-%5eFlashback%5e-%5ehindi?sid=164&flags=8236&sn=29          {% elif station == ''''''''''''''''bollywood_instrumental'''''''''''''''' %}            x-rincon-mp3radio://123.176.41.8:8532          {% elif station == ''''''''''''''''bollywood_radio_and_beyond'''''''''''''''' %}            x-rincon-mp3radio://96.31.83.86:8084          {% elif station == ''''''''''''''''npr'''''''''''''''' %}            x-rincon-mp3radio://nprdmp-live01-mp3.akacast.akamaistream.net/7/998/364916/v1/npr.akacast.akamaistream.net/nprdmp_live01_mp3          {% elif station == ''''''''''''''''wabe_news'''''''''''''''' %}            x-rincon-mp3radio://pba-ice.streamguys.org:80/news          {% elif station == ''''''''''''''''wabe'''''''''''''''' %}            x-rincon-mp3radio://pba-ice.streamguys.org:80/wabe        {% endif %}                        
       media_content_type: "MUSIC"
 sonoslinein:
   alias: 'Sonos set Line-in'
@@ -219,7 +219,7 @@ updatetracker:
     data_template:
       name: "Tracker updated: "
       message: >
-        {{ states[entityid.split('.')[0]][entityid.split('.')[1]].name }} is {{ tostate }} at {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p', true) }}.                
+        {{ states[entityid.split(''''''''''''''''.'''''''''''''''')[0]][entityid.split(''''''''''''''''.'''''''''''''''')[1]].name }} is {{ tostate }} at {{ as_timestamp(now()) | timestamp_custom(''''''''''''''''%I:%M:%S %p'''''''''''''''', true) }}.                        
 portfolio:
   sequence:
   - service: input_number.set_value
@@ -250,7 +250,7 @@ initialize_hass:
       entityid: 'device_tracker.alok_alok'
       fromstate: '{{states.device_tracker.alok_alok.state}}'
       tostate: '{{states.device_tracker.alok_alok.state}}'
-  - service_template: "homeassistant.turn_{{ 'on' if states.media_player.living_room_tv.state == 'on' else 'off' }}"
+  - service_template: "homeassistant.turn_{{ ''''''''''''''''on'''''''''''''''' if states.media_player.living_room_tv.state == ''''''''''''''''on'''''''''''''''' else ''''''''''''''''off'''''''''''''''' }}"
     entity_id:
       - input_boolean.tv
   - service: input_select.select_option
@@ -269,12 +269,12 @@ initialize_hass:
     data_template:
       entity_id: input_select.hdmiswitcher
       option: >
-        {%- if states.remote.livingroom.attributes.current_activity == "Watch Apple TV" -%}            AppleTV          {%- elif states.remote.livingroom.attributes.current_activity == "Watch Fire TV" -%}            FireTV          {%- else -%}            Shield          {%- endif -%}                        
+        {%- if states.remote.livingroom.attributes.current_activity == "Watch Apple TV" -%}            AppleTV          {%- elif states.remote.livingroom.attributes.current_activity == "Watch Fire TV" -%}            FireTV          {%- else -%}            Shield          {%- endif -%}                                
   - service: input_number.set_value
     data_template:
       entity_id: input_number.harmonyvolume
       value: >
-        {{ (state_attr('media_player.family_room_2', 'volume_level') * 100) | int }}                        
+        {{ (state_attr(''''''''''''''''media_player.family_room_2'''''''''''''''', ''''''''''''''''volume_level'''''''''''''''') * 100) | int }}                                
   - service: homeassistant.turn_on
     entity_id: script.classify_images
 classify_images:
