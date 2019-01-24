@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using YamlDotNet.Core;
 
 namespace Data_Model
@@ -31,10 +29,19 @@ namespace Data_Model
             this.nodes = null;
         }
 
-        public override void AddChildren(MyYamlNode child) { }
-        public override bool Contains(string name) { return false; }
-        public override MyYamlNode GetFirst(string name) { return null; }
+        public override void AddChildren(MyYamlNode child)
+        {
+        }
 
+        public override bool Contains(string name)
+        {
+            return false;
+        }
+
+        public override MyYamlNode GetFirst(string name)
+        {
+            return null;
+        }
 
         public override string ToString()
         {
@@ -57,8 +64,6 @@ namespace Data_Model
                     else
                         print_value += indent + "    " + line;
                 }
-                
-                
             }
 
             string text = indent + name + ": " + print_tag + print_value + '\n';

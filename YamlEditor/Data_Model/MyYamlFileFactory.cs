@@ -1,10 +1,10 @@
 ﻿namespace Data_Model
 {
-        public static class MyYamlFileFactory
+    public static class MyYamlFileFactory
+    {
+        public static MyYamlFile CreateMyYamlFile(string path)
         {
-            public static MyYamlFile CreateMyYamlFile(string path)
-            {
-                return new MyYamlFile(path);
-            }           
+            return new MyYamlFile(path);
         }
     }
+}

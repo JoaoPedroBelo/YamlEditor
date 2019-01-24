@@ -13,4 +13,4 @@ automation:
   - service: hassio.snapshot_full
     data_template:
       name: >
-        {{ now().strftime('%Y%m%d') }} Weekly Backup        
+        {{ now().strftime('%Y%m%d') }} Weekly Backup                        

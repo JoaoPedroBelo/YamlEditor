@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using Data_Model;
+using YamlEditor.Commands;
+using Logging;
 using MaterialSkin;
 using MaterialSkin.Controls;
-using YamlDotNet.RepresentationModel;
-using Logging;
-using Data_Model;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -21,6 +15,10 @@ namespace YamlEditor
 {
     public partial class YamlEditor : MaterialForm
     {
+
+        private MyYamlScalarNode selectedScalarNode { get; set; }
+        private CommandManager Manager = new CommandManager();
+
         public YamlEditor()
         {
             InitializeComponent();
@@ -44,6 +42,28 @@ namespace YamlEditor
 
             Logger.Instance.Recorder = new Logging.DateRecorderDecorator(new CounterDecorator(new TextBoxRecorder(textBox_Log)));
 
+            toolStripButton_Undo.Enabled = false;
+            toolStripButton_Redo.Enabled = false;
+            nameTextBox.Enabled = false;
+            tagTextBox.Enabled = false;
+            valueTextBox.Enabled = false;
+            updateButton.Enabled = false;
+
+            Manager.OnUpdate += (subject, data) =>
+            {
+                toolStripButton_Undo.Enabled = Manager.HasUndo();
+                toolStripButton_Redo.Enabled = Manager.HasRedo();
+                if (selectedScalarNode != null)
+                {
+                    nameTextBox.Text = selectedScalarNode.name;
+                    tagTextBox.Text = selectedScalarNode.tag;
+                    valueTextBox.Text = selectedScalarNode.value;
+                }
+            };
+
+        }
+
+        //Corre form no segundo ecra
             toolStripMenuItem_ClearLog.Click += new EventHandler(ClearLogClicked);
         }
         public void ClearLogClicked (object sender, EventArgs e)
@@ -94,7 +114,6 @@ namespace YamlEditor
 
         private void PopulateTreeView(TreeView treeView, string base_directory)
         {
-
             treeView.Nodes.Clear();
 
             foreach (MyYamlFile file in MyYamlFile.all_files)
@@ -188,7 +207,6 @@ namespace YamlEditor
                 {
                     PopulateNodes(new_parent, child);
                 }
-
             }
             else if (yamlnode is MyYamlSequenceNode)
             {
@@ -208,6 +226,16 @@ namespace YamlEditor
             new_node.Text = name;
             new_node.Tag = yamlnode;
             new_node.ImageIndex = new_node.SelectedImageIndex = GetImageIndex(yamlnode);
+            if (yamlnode is MyYamlScalarNode)
+            {
+                ((MyYamlScalarNode)yamlnode).OnUpdate += (subject, data) =>
+                {
+                    new_node.Name = ((MyYamlScalarNode)subject).name;
+                    new_node.Text = ((MyYamlScalarNode)subject).name;
+                    new_node.Tag = subject;
+                    new_node.ImageIndex = new_node.SelectedImageIndex = GetImageIndex(subject);
+                };
+            }
             return new_node;
         }
 
@@ -280,7 +308,26 @@ namespace YamlEditor
 
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
-            mainPropertyGrid.SelectedObject = e.Node.Tag;
+            Logger.Instance.WriteLine("onAfterSelect");
+            if (e.Node.Tag is MyYamlScalarNode)
+            {
+                Logger.Instance.WriteLine("onAfterSelect: is MyYamlScalarNode");
+                selectedScalarNode = (MyYamlScalarNode)e.Node.Tag;
+                nameTextBox.Text = selectedScalarNode.name;
+                tagTextBox.Text = selectedScalarNode.tag;
+                valueTextBox.Text = selectedScalarNode.value;
+                nameTextBox.Enabled = true;
+                tagTextBox.Enabled = true;
+                valueTextBox.Enabled = true;
+                updateButton.Enabled = true;
+            } else
+            {
+                selectedScalarNode = null;
+                nameTextBox.Enabled = false;
+                tagTextBox.Enabled = false;
+                valueTextBox.Enabled = false;
+                updateButton.Enabled = false;
+            }
         }
 
         //Loads help page of clicked node
@@ -298,7 +345,6 @@ namespace YamlEditor
                     mainTabControl.SelectTab(helpTabPage);
                     Logger.Instance.WriteLine($"Help page  \"https://www.home-assistant.io/components/{ selected.Text }.{ childAsScalarNode.value }\" opened.");
                 }
-
             }
         }
 
@@ -312,6 +358,23 @@ namespace YamlEditor
             new MyYamlFile().SaveAllFiles();
         }
 
+        private void onPropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            Logger.Instance.WriteLine("onPropertyValueChanged");
+        }
+
+        private void onUndoClick(object sender, EventArgs e)
+        {
+            Logger.Instance.WriteLine("onUndoClick");
+            Manager.Undo();
+        }
+
+        private void onRedoClick(object sender, EventArgs e)
+        {
+            Logger.Instance.WriteLine("onRedoClick");
+            Manager.Redo();
+        }
+
         private void materialFlatButton_LogMenu_Click(object sender, EventArgs e)
         {
             Button btnSender = (Button)sender;
@@ -323,11 +386,25 @@ namespace YamlEditor
     }
 }
 
+        private void updateButton_Click(object sender, EventArgs e)
+        {
+            Logger.Instance.WriteLine("updateButton_Click");
+            if (selectedScalarNode == null) return;
+            MacroCommand macroCommand = new MacroCommand();
+            macroCommand.Add(new SetNameCommand(selectedScalarNode, nameTextBox.Text));
+            macroCommand.Add(new SetTagCommand(selectedScalarNode, tagTextBox.Text));
+            macroCommand.Add(new SetValueCommand(selectedScalarNode, valueTextBox.Text));
+            Manager.Execute(macroCommand);
+        }
+    }
+}
 
 //Removes toolstrip border
 public partial class ToolStripNoBoder : ToolStripSystemRenderer
 {
-    public ToolStripNoBoder() { }
+    public ToolStripNoBoder()
+    {
+    }
 
     protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
     {

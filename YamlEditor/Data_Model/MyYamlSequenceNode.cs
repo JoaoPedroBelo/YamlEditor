@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System;
 
 namespace Data_Model
 {
@@ -7,7 +6,9 @@ namespace Data_Model
     {
         public override List<MyYamlNode> nodes { get; set; }
 
-        public MyYamlSequenceNode(string name, int indentAmount) : base(name, indentAmount) { }
+        public MyYamlSequenceNode(string name, int indentAmount) : base(name, indentAmount)
+        {
+        }
 
         public override void AddChildren(MyYamlNode child)
         {
@@ -67,4 +68,3 @@ namespace Data_Model
         }
     }
 }
-

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Logging
+﻿namespace Logging
 {
     public class TraceRecorder : IRecorder
     {
@@ -10,12 +8,11 @@ namespace Logging
 
         #region IRecorder Members
 
-        public void Write( string aMessage )
+        public void Write(string aMessage)
         {
-            System.Diagnostics.Trace.WriteLine( aMessage );
+            System.Diagnostics.Trace.WriteLine(aMessage);
         }
 
-        #endregion
-
+        #endregion IRecorder Members
     }
 }

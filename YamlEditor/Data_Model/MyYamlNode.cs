@@ -1,13 +1,20 @@
 using System.Collections.Generic;
-using System;
+using YamlEditor.Patterns;
 
 namespace Data_Model
 {
-    public abstract class MyYamlNode
+    public abstract class MyYamlNode : ISubject
     {
-        public string name { get; set; }
+        private string mName;
+        public string name
+        {
+            get { return mName; }
+            set { mName = value; Notify(); }
+        }
         public int indentAmount { get; private set; }
         public abstract List<MyYamlNode> nodes { get; set; }
+
+        public event UpdateEventHandler OnUpdate;
 
         public MyYamlNode(string name, int indentAmount)
         {
@@ -17,7 +24,14 @@ namespace Data_Model
         }
 
         public abstract void AddChildren(MyYamlNode child);
+
         public abstract bool Contains(string name);
+
         public abstract MyYamlNode GetFirst(string name);
+
+        public void Notify(object aData = null)
+        {
+            OnUpdate?.Invoke(this, aData);
+        }
     }
 }

@@ -6,22 +6,22 @@ namespace Logging
     {
         private readonly IList<IRecorder> mRecoders = new List<IRecorder>();
 
-        public void Append( IRecorder aRecorder )
+        public void Append(IRecorder aRecorder)
         {
-            if ( mRecoders.Contains( aRecorder ) ) return;
-            mRecoders.Add( aRecorder );
+            if (mRecoders.Contains(aRecorder)) return;
+            mRecoders.Add(aRecorder);
         }
 
-        public void Remove( IRecorder aRecorder )
+        public void Remove(IRecorder aRecorder)
         {
-            if ( ! mRecoders.Contains( aRecorder ) ) return;
-            mRecoders.Remove( aRecorder );
+            if (!mRecoders.Contains(aRecorder)) return;
+            mRecoders.Remove(aRecorder);
         }
 
-        public void Write( string aMessage )
+        public void Write(string aMessage)
         {
-            foreach ( IRecorder recorder in mRecoders )
-                recorder.Write( aMessage );
+            foreach (IRecorder recorder in mRecoders)
+                recorder.Write(aMessage);
         }
     }
 }

@@ -1,6 +1,7 @@
+using Logging;
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using YamlDotNet.RepresentationModel;
 using Logging;
 using System.Windows.Forms;
@@ -16,7 +17,9 @@ namespace Data_Model
         public static List<MyYamlFile> all_files = new List<MyYamlFile>();
         public int indentAmount = 0;
 
-        public MyYamlFile() { }
+        public MyYamlFile()
+        {
+        }
 
         public MyYamlFile(string file_directory)
         {
@@ -60,8 +63,6 @@ namespace Data_Model
                 LoadChildren((YamlSequenceNode)yaml.Documents[0].RootNode);
             }
             catch (Exception) { }
-
-
         }
 
         /// <summary>
@@ -130,9 +131,9 @@ namespace Data_Model
                     LoadChildren(child.Value as YamlMappingNode, parent);
                     indentAmount -= 2;
                 }
-
             }
         }
+
         //In case there is a file with a sequence node in the beginning
         private void LoadChildren(YamlSequenceNode mapping)
         {
@@ -142,7 +143,6 @@ namespace Data_Model
             foreach (var child in children)
             {
                 var key = child as YamlScalarNode;
-                //System.Diagnostics.Trace.Assert(key != null);
 
                 if (child is YamlMappingNode)
                 {
@@ -159,9 +159,9 @@ namespace Data_Model
                     LoadChildren(child as YamlMappingNode, parent);
                     indentAmount -= 2;
                 }
-
             }
         }
+
         //OVERLOADING
         private void LoadChildren(YamlMappingNode mapping, MyYamlNode parent)
         {
@@ -171,7 +171,6 @@ namespace Data_Model
             foreach (var child in children)
             {
                 var key = child.Key as YamlScalarNode;
-                //System.Diagnostics.Trace.Assert(key != null);
 
                 //alias/anchor error on yamlStream fix:
                 if (key.Value[0] == '*' || key.Value[key.Value.Length - 1] == '*')
@@ -228,6 +227,7 @@ namespace Data_Model
                 }
             }
         }
+
         //OVERLOADING
         private void LoadChildren(YamlSequenceNode sequence, MyYamlNode parent)
         {
@@ -235,15 +235,8 @@ namespace Data_Model
             {
                 if (child is YamlScalarNode)
                 {
-
                     var scalar = child as YamlScalarNode;
                     parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode("", scalar.Tag, scalar.Value, scalar.Style, indentAmount));
-
-                    //CANT HAVE INCLUDE IN SEQUENCE CHILDREN???
-                    /* if (scalar.Tag == "!include")
-                    {
-                        LoadFile(node, scalar.Value);
-                    } */
                 }
                 else if (child is YamlSequenceNode)
                 {
@@ -317,6 +310,5 @@ namespace Data_Model
             }
             return text;
         }
-
     }
 }

@@ -133,7 +133,7 @@ automation:
   - service: notify.notify
     data:
       message: >
-        Bayesian Sensor Triggered: {{ trigger.entity_id }}        
+        Bayesian Sensor Triggered: {{ trigger.entity_id }}                        
 scene:
 - name: Home
   entities:

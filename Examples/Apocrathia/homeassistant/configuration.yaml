@@ -60,7 +60,7 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 zone: !include zones.yaml
-sensor: !include sensors.yaml
+sensores: !include sensors.yaml
 binary_sensor: !include binary_sensors.yaml
 device_tracker: !include device_tracker.yaml
 camera: !include camera.yaml

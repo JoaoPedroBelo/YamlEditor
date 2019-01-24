@@ -2,6 +2,6 @@
 {
     public interface IRecorder
     {
-        void Write( string aMessage );
+        void Write(string aMessage);
     }
 }
