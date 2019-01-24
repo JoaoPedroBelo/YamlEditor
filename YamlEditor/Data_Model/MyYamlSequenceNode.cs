@@ -51,24 +51,31 @@ namespace Data_Model
 
             indent = new string(' ', indentAmount);
 
+            bool all_childs_scalar = true;
             foreach (MyYamlNode node in nodes)
             {
-                if (node.nodes != null)
-                MessageBox.Show("" + node.nodes.Count + " ___ " + node.nodes[0].name);
+                if (node is MyYamlMappingNode || node is MyYamlSequenceNode)
+                    all_childs_scalar = false;
+            }
 
-                if (node.nodes != null && node.nodes.Count <= 1 && node.name == "" && node is MyYamlScalarNode)
+            foreach (MyYamlNode node in nodes)
+            {
+                if (node.name == "" && node is MyYamlScalarNode)
                 {
-                    text += indent + "- " + node.ToString();
-                }
-                else if (node.name == "" && node is MyYamlScalarNode)
-                {
-                    indent = new string(' ', indentAmount + 2);
-                    text += indent + "- " + node.ToString();
-                    indent = new string(' ', indentAmount);
+                    if (all_childs_scalar)
+                    {
+                        string new_indent = new string(' ', indentAmount + 2);
+                        text += new_indent + "- " + node.ToString();
+                    }
+                    else
+                    {
+                        text += indent + "- " + node.ToString();
+                    }
                 }
                 else
                 {
                     text += indent + "- " + node.ToString().Substring((indentAmount + 2), node.ToString().Length - (indentAmount + 2));
+                    string[] all_lines = node.ToString().Substring((indentAmount + 2), node.ToString().Length - (indentAmount + 2)).Split('\n');
                 }
             }
             return text;

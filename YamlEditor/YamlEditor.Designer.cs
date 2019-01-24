@@ -405,12 +405,12 @@ namespace YamlEditor
             this.toolStripMenuItem_ClearLog});
             this.materialContextMenuStrip_LogMenu.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialContextMenuStrip_LogMenu.Name = "materialContextMenuStrip_LogMenu";
-            this.materialContextMenuStrip_LogMenu.Size = new System.Drawing.Size(181, 48);
+            this.materialContextMenuStrip_LogMenu.Size = new System.Drawing.Size(125, 26);
             // 
             // toolStripMenuItem_ClearLog
             // 
             this.toolStripMenuItem_ClearLog.Name = "toolStripMenuItem_ClearLog";
-            this.toolStripMenuItem_ClearLog.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem_ClearLog.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem_ClearLog.Text = "Clear Log";
             // 
             // YamlEditor
