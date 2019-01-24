@@ -48,8 +48,11 @@ namespace YamlEditor
             this.helpTabPage = new System.Windows.Forms.TabPage();
             this.mainWebBrowser = new System.Windows.Forms.WebBrowser();
             this.splitContainer_Log = new System.Windows.Forms.SplitContainer();
+            this.materialFlatButton_LogMenu = new MaterialSkin.Controls.MaterialFlatButton();
             this.materialLabel_Log = new MaterialSkin.Controls.MaterialLabel();
             this.textBox_Log = new System.Windows.Forms.TextBox();
+            this.materialContextMenuStrip_LogMenu = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.toolStripMenuItem_ClearLog = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip_TopMenu.SuspendLayout();
             this.panel_MainForm.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitter_MainForm)).BeginInit();
@@ -67,6 +70,7 @@ namespace YamlEditor
             this.splitContainer_Log.Panel1.SuspendLayout();
             this.splitContainer_Log.Panel2.SuspendLayout();
             this.splitContainer_Log.SuspendLayout();
+            this.materialContextMenuStrip_LogMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // materialDivider_DragBar
@@ -277,6 +281,7 @@ namespace YamlEditor
             // 
             // splitContainer_Log.Panel1
             // 
+            this.splitContainer_Log.Panel1.Controls.Add(this.materialFlatButton_LogMenu);
             this.splitContainer_Log.Panel1.Controls.Add(this.materialLabel_Log);
             // 
             // splitContainer_Log.Panel2
@@ -285,6 +290,23 @@ namespace YamlEditor
             this.splitContainer_Log.Size = new System.Drawing.Size(821, 220);
             this.splitContainer_Log.SplitterDistance = 35;
             this.splitContainer_Log.TabIndex = 0;
+            // 
+            // materialFlatButton_LogMenu
+            // 
+            this.materialFlatButton_LogMenu.AutoSize = true;
+            this.materialFlatButton_LogMenu.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialFlatButton_LogMenu.Depth = 0;
+            this.materialFlatButton_LogMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.materialFlatButton_LogMenu.Location = new System.Drawing.Point(784, 1);
+            this.materialFlatButton_LogMenu.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialFlatButton_LogMenu.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialFlatButton_LogMenu.Name = "materialFlatButton_LogMenu";
+            this.materialFlatButton_LogMenu.Primary = false;
+            this.materialFlatButton_LogMenu.Size = new System.Drawing.Size(30, 36);
+            this.materialFlatButton_LogMenu.TabIndex = 1;
+            this.materialFlatButton_LogMenu.Text = ". . .";
+            this.materialFlatButton_LogMenu.UseVisualStyleBackColor = true;
+            this.materialFlatButton_LogMenu.Click += new System.EventHandler(this.materialFlatButton_LogMenu_Click);
             // 
             // materialLabel_Log
             // 
@@ -310,6 +332,22 @@ namespace YamlEditor
             this.textBox_Log.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox_Log.Size = new System.Drawing.Size(821, 181);
             this.textBox_Log.TabIndex = 0;
+            // 
+            // materialContextMenuStrip_LogMenu
+            // 
+            this.materialContextMenuStrip_LogMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialContextMenuStrip_LogMenu.Depth = 0;
+            this.materialContextMenuStrip_LogMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem_ClearLog});
+            this.materialContextMenuStrip_LogMenu.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialContextMenuStrip_LogMenu.Name = "materialContextMenuStrip_LogMenu";
+            this.materialContextMenuStrip_LogMenu.Size = new System.Drawing.Size(181, 48);
+            // 
+            // toolStripMenuItem_ClearLog
+            // 
+            this.toolStripMenuItem_ClearLog.Name = "toolStripMenuItem_ClearLog";
+            this.toolStripMenuItem_ClearLog.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem_ClearLog.Text = "Clear Log";
             // 
             // YamlEditor
             // 
@@ -344,6 +382,7 @@ namespace YamlEditor
             this.splitContainer_Log.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer_Log)).EndInit();
             this.splitContainer_Log.ResumeLayout(false);
+            this.materialContextMenuStrip_LogMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -371,6 +410,9 @@ namespace YamlEditor
         private System.Windows.Forms.PropertyGrid mainPropertyGrid;
         private System.Windows.Forms.WebBrowser mainWebBrowser;
         private System.Windows.Forms.ImageList mainImageList;
+        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton_LogMenu;
+        private MaterialSkin.Controls.MaterialContextMenuStrip materialContextMenuStrip_LogMenu;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_ClearLog;
     }
 }
 
