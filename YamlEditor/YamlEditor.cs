@@ -220,10 +220,19 @@ namespace YamlEditor
             {
                 ((MyYamlScalarNode)yamlnode).OnUpdate += (subject, data) =>
                 {
-                    new_node.Name = ((MyYamlScalarNode)subject).name;
-                    new_node.Text = ((MyYamlScalarNode)subject).name;
-                    new_node.Tag = subject;
-                    new_node.ImageIndex = new_node.SelectedImageIndex = GetImageIndex(subject);
+                    if (((MyYamlScalarNode)subject).name == "")
+                    {
+                        new_node.Name = ((MyYamlScalarNode)subject).value;
+                        new_node.Text = ((MyYamlScalarNode)subject).value;
+                        
+                    }
+                    else
+                    {
+                        new_node.Name = ((MyYamlScalarNode)subject).name;
+                        new_node.Text = ((MyYamlScalarNode)subject).name;
+                    }
+                    new_node.Tag = (MyYamlScalarNode)subject;
+                    new_node.ImageIndex = new_node.SelectedImageIndex = GetImageIndex((MyYamlScalarNode)subject);
                 };
             }
             return new_node;
@@ -265,7 +274,8 @@ namespace YamlEditor
                 nameTextBox.Text = selectedScalarNode.name;
                 tagTextBox.Text = selectedScalarNode.tag;
                 valueTextBox.Text = selectedScalarNode.value;
-                nameTextBox.Enabled = true;
+                if (selectedScalarNode.name != "") nameTextBox.Enabled = true;
+                else nameTextBox.Enabled = false;
                 tagTextBox.Enabled = true;
                 valueTextBox.Enabled = true;
                 updateButton.Enabled = true;
@@ -329,7 +339,7 @@ namespace YamlEditor
             Logger.Instance.WriteLine("updateButton_Click");
             if (selectedScalarNode == null) return;
             MacroCommand macroCommand = new MacroCommand();
-            macroCommand.Add(new SetNameCommand(selectedScalarNode, nameTextBox.Text));
+            if (selectedScalarNode.name != "") macroCommand.Add(new SetNameCommand(selectedScalarNode, nameTextBox.Text));
             macroCommand.Add(new SetTagCommand(selectedScalarNode, tagTextBox.Text));
             macroCommand.Add(new SetValueCommand(selectedScalarNode, valueTextBox.Text));
             Manager.Execute(macroCommand);

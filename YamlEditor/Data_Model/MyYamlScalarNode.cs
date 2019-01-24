@@ -6,8 +6,18 @@ namespace Data_Model
     public class MyYamlScalarNode : MyYamlNode
     {
         public string value_type { get; set; }//PLACEHOLDER SOLUTION
-        public string value { get; set; }
-        public string tag { get; set; }
+        private string mValue { get; set; }
+        public string value
+        {
+            get { return mValue; }
+            set { mValue = value; Notify(); }
+        }
+        private string mTag { get; set; }
+        public string tag
+        {
+            get { return mTag; }
+            set { mTag = value; Notify(); }
+        }
         public ScalarStyle style;
         public override List<MyYamlNode> nodes { get; set; }
 
