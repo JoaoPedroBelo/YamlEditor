@@ -216,6 +216,16 @@ namespace YamlEditor
             new_node.Text = name;
             new_node.Tag = yamlnode;
             new_node.ImageIndex = new_node.SelectedImageIndex = GetImageIndex(yamlnode);
+            if (yamlnode is MyYamlScalarNode)
+            {
+                ((MyYamlScalarNode)yamlnode).OnUpdate += (subject, data) =>
+                {
+                    new_node.Name = ((MyYamlScalarNode)subject).name;
+                    new_node.Text = ((MyYamlScalarNode)subject).name;
+                    new_node.Tag = subject;
+                    new_node.ImageIndex = new_node.SelectedImageIndex = GetImageIndex(subject);
+                };
+            }
             return new_node;
         }
 
