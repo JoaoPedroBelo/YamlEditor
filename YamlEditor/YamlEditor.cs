@@ -42,6 +42,8 @@ namespace YamlEditor
 
             Logger.Instance.Recorder = new Logging.DateRecorderDecorator(new CounterDecorator(new TextBoxRecorder(textBox_Log)));
 
+            toolStripMenuItem_ClearLog.Click += new EventHandler(ClearLogClicked);
+
             toolStripButton_Undo.Enabled = false;
             toolStripButton_Redo.Enabled = false;
             nameTextBox.Enabled = false;
@@ -63,17 +65,15 @@ namespace YamlEditor
 
         }
 
-        //Corre form no segundo ecra
-            toolStripMenuItem_ClearLog.Click += new EventHandler(ClearLogClicked);
-        }
-        public void ClearLogClicked (object sender, EventArgs e)
-        {
-            textBox_Log.Clear();
-        }
         //Corre form no segundo ecra 
         private void OnFormLoad(object sender, EventArgs e)
         {
             this.Location = Screen.AllScreens[1].WorkingArea.Location;
+        }
+
+        public void ClearLogClicked(object sender, EventArgs e)
+        {
+            textBox_Log.Clear();
         }
 
         private void OnExit(object sender, EventArgs e)
@@ -320,7 +320,8 @@ namespace YamlEditor
                 tagTextBox.Enabled = true;
                 valueTextBox.Enabled = true;
                 updateButton.Enabled = true;
-            } else
+            }
+            else
             {
                 selectedScalarNode = null;
                 nameTextBox.Enabled = false;
@@ -382,9 +383,6 @@ namespace YamlEditor
             ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
             materialContextMenuStrip_LogMenu.Show(ptLowerLeft);
         }
-
-    }
-}
 
         private void updateButton_Click(object sender, EventArgs e)
         {
