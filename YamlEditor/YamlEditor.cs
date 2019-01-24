@@ -1,4 +1,5 @@
 using Data_Model;
+using YamlEditor.Commands;
 using Logging;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -220,9 +221,23 @@ namespace YamlEditor
             return 0;
         }
 
+        private MyYamlScalarNode selectedScalarNode { get; set; }
+
         private void OnAfterSelect(object sender, TreeViewEventArgs e)
         {
-            mainPropertyGrid.SelectedObject = e.Node.Tag;
+            Logger.Instance.WriteLine("onAfterSelect");
+            if (e.Node.Tag is MyYamlScalarNode)
+            {
+                Logger.Instance.WriteLine("onAfterSelect: is MyYamlScalarNode");
+                selectedScalarNode = (MyYamlScalarNode)e.Node.Tag;
+                nameTextBox.Text = selectedScalarNode.name;
+                tagTextBox.Text = selectedScalarNode.tag;
+                valueTextBox.Text = selectedScalarNode.value;
+            } else
+            {
+                selectedScalarNode = null;
+            }
+            //mainPropertyGrid.SelectedObject = e.Node.Tag;
         }
 
         //Loads help page of clicked node
@@ -251,6 +266,36 @@ namespace YamlEditor
         private void toolStripButton_Save_Click(object sender, EventArgs e)
         {
             new MyYamlFile().SaveAllFiles();
+        }
+
+        private CommandManager Manager = new CommandManager();
+
+        private void onPropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            Logger.Instance.WriteLine("onPropertyValueChanged");
+        }
+
+        private void onUndoClick(object sender, EventArgs e)
+        {
+            Logger.Instance.WriteLine("onUndoClick");
+            Manager.Undo();
+        }
+
+        private void onRedoClick(object sender, EventArgs e)
+        {
+            Logger.Instance.WriteLine("onRedoClick");
+            Manager.Redo();
+        }
+
+        private void updateButton_Click(object sender, EventArgs e)
+        {
+            Logger.Instance.WriteLine("updateButton_Click");
+            if (selectedScalarNode == null) return;
+            MacroCommand macroCommand = new MacroCommand();
+            macroCommand.Add(new SetNameCommand(selectedScalarNode, nameTextBox.Text));
+            macroCommand.Add(new SetTagCommand(selectedScalarNode, tagTextBox.Text));
+            macroCommand.Add(new SetValueCommand(selectedScalarNode, valueTextBox.Text));
+            Manager.Execute(macroCommand);
         }
     }
 }

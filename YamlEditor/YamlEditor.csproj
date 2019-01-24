@@ -51,6 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandManager.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\ICommandManager.cs" />
+    <Compile Include="Commands\MacroCommand.cs" />
+    <Compile Include="Commands\SetValueCommand.cs" />
+    <Compile Include="Commands\SetTagCommand.cs" />
+    <Compile Include="Commands\SetNameCommand.cs" />
     <Compile Include="Data_Model\MyNodeFactory.cs" />
     <Compile Include="Data_Model\MyYamlFile.cs" />
     <Compile Include="Data_Model\MyYamlFileFactory.cs" />
