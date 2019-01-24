@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using YamlDotNet.RepresentationModel;
+using Logging;
+using System.Windows.Forms;
 
 namespace Data_Model
 {
@@ -74,11 +76,24 @@ namespace Data_Model
             foreach (var child in children)
             {
                 var key = child.Key as YamlScalarNode;
-                System.Diagnostics.Trace.Assert(key != null);
+                //System.Diagnostics.Trace.Assert(key != null);
+
+                //alias/anchor error on yamlStream fix:
+                if (key.Value[0] == '*' || key.Value[key.Value.Length - 1] == '*')
+                    key.Value = "\"" + key.Value + "\"";
 
                 if (child.Value is YamlScalarNode)
                 {
                     var scalar = child.Value as YamlScalarNode;
+                    //Fix yamlStream syntax error
+                    //removes unnecessary '/' after folder name in includes 
+                    if (!(string.IsNullOrEmpty(scalar.Value)) && (scalar.Value[scalar.Value.Length - 1] == '\\' || scalar.Value[scalar.Value.Length - 1] == '/'))
+                        scalar.Value = scalar.Value.Remove(scalar.Value.Length - 1);
+
+                    //replaces ' with ''
+                    if (scalar.Value.Contains("'"))
+                        scalar.Value = scalar.Value.Replace("'", "''");
+
                     nodes.Add(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount));
 
                     if (scalar.Tag == "!include")
@@ -86,7 +101,7 @@ namespace Data_Model
                         if (File.Exists(directory + scalar.Value)) MyYamlFileFactory.CreateMyYamlFile(directory + scalar.Value);
                         else Logger.Instance.WriteLine("Could not find file '" + directory + scalar.Value + "'.");
                     }
-                    if (scalar.Tag == "!include_dir_named")
+                    else if (scalar.Tag == "!include_dir_named" || scalar.Tag == "!include_dir_merge_named" || scalar.Tag == "!include_dir_merge_list")
                     {
                         System.IO.Directory.CreateDirectory(directory + scalar.Value);//Create directory if doesnt exists
                         string[] files = System.IO.Directory.GetFiles(directory + scalar.Value + "\\", "*.yaml");
@@ -157,9 +172,22 @@ namespace Data_Model
             {
                 var key = child.Key as YamlScalarNode;
 
+                //alias/anchor error on yamlStream fix:
+                if (key.Value[0] == '*' || key.Value[key.Value.Length - 1] == '*')
+                    key.Value = "\"" + key.Value + "\"";
+
                 if (child.Value is YamlScalarNode)
                 {
                     var scalar = child.Value as YamlScalarNode;
+                    //Fix yamlStream syntax error
+                    //removes unnecessary '/' after folder name in includes 
+                    if (!(string.IsNullOrEmpty(scalar.Value)) && (scalar.Value[scalar.Value.Length - 1] == '\\' || scalar.Value[scalar.Value.Length - 1] == '/'))
+                        scalar.Value = scalar.Value.Remove(scalar.Value.Length - 1);
+
+                    //replaces ' with ''
+                    if (scalar.Value.Contains("'"))
+                        scalar.Value = scalar.Value.Replace("'", "''");
+
                     parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount));
 
                     if (scalar.Tag == "!include")
@@ -167,7 +195,7 @@ namespace Data_Model
                         if (File.Exists(directory + scalar.Value)) MyYamlFileFactory.CreateMyYamlFile(directory + scalar.Value);
                         else Logger.Instance.WriteLine("Could not find file '" + directory + scalar.Value + "'.");
                     }
-                    if (scalar.Tag == "!include_dir_named")
+                    if (scalar.Tag == "!include_dir_named" || scalar.Tag == "!include_dir_merge_named" || scalar.Tag == "!include_dir_merge_list")
                     {
                         System.IO.Directory.CreateDirectory(directory + scalar.Value);//Create directory if doesnt exists
                         string[] files = System.IO.Directory.GetFiles(directory + scalar.Value + "\\", "*.yaml");
@@ -225,6 +253,15 @@ namespace Data_Model
                     LoadChildren(child as YamlMappingNode, new_parent);
                 }
             }
+        }
+
+        public bool StringContainsCharacter(string text, char character)
+        {
+            foreach (char x in text)
+            {
+                if (x == character) return true;
+            }
+            return false;
         }
 
         /// <summary>

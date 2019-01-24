@@ -18,7 +18,7 @@ namespace Data_Model
             get { return mTag; }
             set { mTag = value; Notify(); }
         }
-        public ScalarStyle style;
+        public ScalarStyle style { get; private set; }
         public override List<MyYamlNode> nodes { get; set; }
 
         public MyYamlScalarNode(string name, string tag, string value, ScalarStyle style, int indentAmount) : base(name, indentAmount)

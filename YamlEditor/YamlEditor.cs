@@ -42,6 +42,8 @@ namespace YamlEditor
 
             Logger.Instance.Recorder = new Logging.DateRecorderDecorator(new CounterDecorator(new TextBoxRecorder(textBox_Log)));
 
+            toolStripMenuItem_ClearLog.Click += new EventHandler(ClearLogClicked);
+
             toolStripButton_Undo.Enabled = false;
             toolStripButton_Redo.Enabled = false;
             nameTextBox.Enabled = false;
@@ -63,10 +65,15 @@ namespace YamlEditor
 
         }
 
-        //Corre form no segundo ecra
+        //Corre form no segundo ecra 
         private void OnFormLoad(object sender, EventArgs e)
         {
-            //this.Location = Screen.AllScreens[1].WorkingArea.Location;
+            this.Location = Screen.AllScreens[1].WorkingArea.Location;
+        }
+
+        public void ClearLogClicked(object sender, EventArgs e)
+        {
+            textBox_Log.Clear();
         }
 
         private void OnExit(object sender, EventArgs e)
@@ -118,10 +125,13 @@ namespace YamlEditor
                     //If file directory is different from the base directory loads the new directory files inside the directory node.
                     string include_dir_name = new DirectoryInfo(file.directory).Name; // gets the folder name
                     TreeNode directory_node = new TreeNode();
-                    directory_node = treeView.Nodes.Find(include_dir_name, true)[0];
+                    directory_node = FindNodeInTreeViewByValue(include_dir_name);
 
-                    new_node = CreateTreeNode(file.fileName, file);
-                    directory_node.Nodes.Add(new_node);
+                    if (directory_node != null)
+                    {
+                        new_node = CreateTreeNode(file.fileName, file);
+                        directory_node.Nodes.Add(new_node);
+                    }
                 }
                 else
                 {
@@ -131,7 +141,7 @@ namespace YamlEditor
 
                 foreach (MyYamlNode yamlnode in file.nodes)
                 {
-                    if (yamlnode.nodes != null && yamlnode.nodes[0] is MyYamlSequenceNode)
+                    if (yamlnode.nodes != null && yamlnode.nodes.Count > 0 && yamlnode.nodes[0] is MyYamlSequenceNode)
                     {
                         PopulateNodes(new_node, yamlnode.nodes[0].nodes[0]);
                     }
@@ -238,6 +248,47 @@ namespace YamlEditor
             return new_node;
         }
 
+        public TreeNode FindNodeInTreeViewByValue(string name)
+        {
+            foreach (TreeNode node in mainTreeView.Nodes)
+            {
+                if (node.Tag is MyYamlScalarNode)
+                {
+                    MyYamlScalarNode nodeAsScalar = (MyYamlScalarNode)node.Tag;
+                    if (nodeAsScalar.value == name) return node;
+                }
+                else
+                {
+                    if (node.Nodes.Count > 0)
+                    {
+                        TreeNode node_found = FindNodeInParentNodeByValue(name, node);
+                        if (node_found != null) return node_found;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public TreeNode FindNodeInParentNodeByValue(string name, TreeNode parent)
+        {
+            foreach (TreeNode node in parent.Nodes)
+            {
+                if (node.Tag is MyYamlScalarNode)
+                {
+                    MyYamlScalarNode nodeAsScalar = (MyYamlScalarNode)node.Tag;
+                    if (nodeAsScalar.value == name) return node;
+                }
+                else
+                {
+                    TreeNode node_found = FindNodeInParentNodeByValue(name, node);
+                    if (node_found != null) return node_found;
+                }
+            }
+
+            return null;
+        }
+
         private int GetImageIndex(Object node)
         {
             if (node is MyYamlMappingNode)
@@ -254,7 +305,7 @@ namespace YamlEditor
                 var nodeAsScalar = (MyYamlScalarNode)node;
                 if (nodeAsScalar.tag == "!secret") return 2;
                 if (nodeAsScalar.tag == "!include") return 1;
-                if (nodeAsScalar.tag == "!include_dir_named") return 6;
+                if (nodeAsScalar.tag == "!include_dir_named" || nodeAsScalar.tag == "!include_dir_merge_list" || nodeAsScalar.tag == "!include_dir_merge_named") return 6;
                 return 0;
             }
             else if (node is MyYamlFile)
@@ -279,7 +330,8 @@ namespace YamlEditor
                 tagTextBox.Enabled = true;
                 valueTextBox.Enabled = true;
                 updateButton.Enabled = true;
-            } else
+            }
+            else
             {
                 selectedScalarNode = null;
                 nameTextBox.Enabled = false;
@@ -332,6 +384,14 @@ namespace YamlEditor
         {
             Logger.Instance.WriteLine("onRedoClick");
             Manager.Redo();
+        }
+
+        private void materialFlatButton_LogMenu_Click(object sender, EventArgs e)
+        {
+            Button btnSender = (Button)sender;
+            Point ptLowerLeft = new Point(-100, btnSender.Height);
+            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+            materialContextMenuStrip_LogMenu.Show(ptLowerLeft);
         }
 
         private void updateButton_Click(object sender, EventArgs e)
