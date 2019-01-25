@@ -69,7 +69,7 @@ namespace YamlEditor
 
             // Auto Save Timer
             autoSaveTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnAutoSaveTimedEvent);
-            autoSaveTimer.Interval = 5000;
+            autoSaveTimer.Interval = 30000; // 30 segundos
             autoSaveTimer.Enabled = false;
             autoSaveCheckBox.Checked = false;
 
@@ -330,7 +330,7 @@ namespace YamlEditor
             Logger.Instance.WriteLine("onAfterSelect");
             if (e.Node.Tag is MyYamlScalarNode)
             {
-                Logger.Instance.WriteLine("onAfterSelect: is MyYamlScalarNode");
+                Logger.Instance.WriteLine( "onAfterSelect: is MyYamlScalarNode @ line " + ((MyYamlScalarNode)e.Node.Tag).line.ToString() + " col " + ((MyYamlScalarNode)e.Node.Tag).col.ToString() );
                 selectedScalarNode = (MyYamlScalarNode)e.Node.Tag;
                 nameTextBox.Text = selectedScalarNode.name;
                 tagTextBox.Text = selectedScalarNode.tag;

@@ -20,13 +20,18 @@ namespace Data_Model
         }
         public ScalarStyle style { get; private set; }
         public override List<MyYamlNode> nodes { get; set; }
+        public int line;
+        public int col;
 
-        public MyYamlScalarNode(string name, string tag, string value, ScalarStyle style, int indentAmount, MyYamlNode parent) : base(name, indentAmount, parent)
+        public MyYamlScalarNode(string name, string tag, string value, ScalarStyle style, int indentAmount, MyYamlNode parent, int aLine, int aCol) : base(name, indentAmount, parent)
         {
             this.value = value;
             this.tag = tag;
             this.value_type = "string";
             this.style = style;
+
+            line = aLine;
+            col = aCol;
 
             int value_int = 0;
             bool successfullyParsedInt = int.TryParse(this.value, out value_int);
