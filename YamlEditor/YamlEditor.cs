@@ -115,11 +115,11 @@ namespace YamlEditor
         private void PopulateTreeView(TreeView treeView, string base_directory)
         {
             treeView.Nodes.Clear();
-
+            
             foreach (MyYamlFile file in MyYamlFile.all_files)
             {
                 TreeNode new_node = new TreeNode();
-
+                
                 if (file.directory != (base_directory + "\\"))
                 {
                     //If file directory is different from the base directory loads the new directory files inside the directory node.
@@ -141,7 +141,7 @@ namespace YamlEditor
 
                 foreach (MyYamlNode yamlnode in file.nodes)
                 {
-                    if (yamlnode.nodes != null && yamlnode.nodes.Count > 0 && yamlnode.nodes[0] is MyYamlSequenceNode)
+                    if (yamlnode.nodes != null && yamlnode.nodes.Count > 0 && yamlnode.nodes[0] is MyYamlSequenceNode && yamlnode.name == "")
                     {
                         PopulateNodes(new_node, yamlnode.nodes[0].nodes[0]);
                     }
@@ -165,7 +165,7 @@ namespace YamlEditor
             else if (yamlnode is MyYamlMappingNode)
             {
                 TreeNode new_parent = new TreeNode();
-
+                
                 if (yamlnode.name == "")
                 {
                     try
@@ -255,7 +255,15 @@ namespace YamlEditor
                 if (node.Tag is MyYamlScalarNode)
                 {
                     MyYamlScalarNode nodeAsScalar = (MyYamlScalarNode)node.Tag;
-                    if (nodeAsScalar.value == name) return node;
+                    string folder_name = nodeAsScalar.value;
+
+                    if (folder_name.Contains("\\"))
+                        folder_name = folder_name.Split('\\')[folder_name.Split('\\').Length - 1];
+                    else if (folder_name.Contains("/"))
+                        folder_name = folder_name.Split('/')[folder_name.Split('/').Length - 1];
+
+                    if (folder_name == name) return node;
+
                 }
                 else
                 {
@@ -277,7 +285,14 @@ namespace YamlEditor
                 if (node.Tag is MyYamlScalarNode)
                 {
                     MyYamlScalarNode nodeAsScalar = (MyYamlScalarNode)node.Tag;
-                    if (nodeAsScalar.value == name) return node;
+                    string folder_name = nodeAsScalar.value;
+
+                    if (folder_name.Contains("\\"))
+                        folder_name = folder_name.Split('\\')[folder_name.Split('\\').Length - 1];
+                    else if (folder_name.Contains("/"))
+                        folder_name = folder_name.Split('/')[folder_name.Split('/').Length - 1];
+                    
+                    if (folder_name == name) return node;
                 }
                 else
                 {
