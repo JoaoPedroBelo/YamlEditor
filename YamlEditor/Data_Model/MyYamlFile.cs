@@ -100,7 +100,7 @@ namespace Data_Model
                     if (scalar.Value.Contains("\"") && scalar.Style == YamlDotNet.Core.ScalarStyle.DoubleQuoted)
                         scalar.Value = scalar.Value.Replace("\"", "\\\"");
 
-                    nodes.Add(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount, null));
+                    nodes.Add(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount, null, key.Start.Line, key.Start.Column));
 
                     if (scalar.Tag == "!include")
                     {
@@ -203,9 +203,9 @@ namespace Data_Model
                     if (scalar.Value.Contains("\"") && scalar.Style == YamlDotNet.Core.ScalarStyle.DoubleQuoted)
                         scalar.Value = scalar.Value.Replace("\"", "\\\"");
 
-                    nodes.Add(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount, null));
+                    nodes.Add(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount, null, key.Start.Line, key.Start.Column));
 
-                    parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount, parent));
+                    parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode(key.Value, scalar.Tag, scalar.Value, scalar.Style, indentAmount, parent, key.Start.Line, key.Start.Column));
 
                     if (scalar.Tag == "!include")
                     {
@@ -253,7 +253,7 @@ namespace Data_Model
                 if (child is YamlScalarNode)
                 {
                     var scalar = child as YamlScalarNode;
-                    parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode("", scalar.Tag, scalar.Value, scalar.Style, indentAmount, parent));
+                    parent.AddChildren(MyNodeFactory.CreateMyYamlScalarNode("", scalar.Tag, scalar.Value, scalar.Style, indentAmount, parent, scalar.Start.Line, scalar.Start.Column));
                 }
                 else if (child is YamlSequenceNode)
                 {
@@ -290,6 +290,32 @@ namespace Data_Model
             Logger.Instance.WriteLine($"File saved: '{ directory + fileName }'");
         }
 
+        public void SaveFileReplacingValues()
+        {
+            StreamReader mReadFile = new StreamReader(directory + fileName);
+            List<string> mLines = new List<string>();
+            string mLine;
+            while((mLine = mReadFile.ReadLine()) != null)
+            {
+                mLines.Add(mLine);
+            }
+            mReadFile.Close();
+            foreach (MyYamlNode node in nodes)
+            {
+                if (node is MyYamlScalarNode)
+                {
+                    Logger.Instance.WriteLine("SaveFileReplacingValues: Node: " + node.name);
+                    MyYamlScalarNode nodeAsScalar = (MyYamlScalarNode)node;
+                    string newLine = mLines[nodeAsScalar.line - 1].Substring(0, nodeAsScalar.col - 1);
+                    newLine += nodeAsScalar.name + ":";
+                    if (nodeAsScalar.tag != null && nodeAsScalar.tag.Length > 0) newLine += " " + nodeAsScalar.tag;
+                    newLine += " " + nodeAsScalar.value;
+                    mLines[nodeAsScalar.line - 1] = newLine;
+                }
+            }
+            File.WriteAllLines(directory + fileName, mLines.ToArray());
+        }
+
         /// <summary>
         /// Saves the files
         /// </summary>
@@ -297,7 +323,8 @@ namespace Data_Model
         {
             foreach (MyYamlFile file in all_files)
             {
-                file.SaveFile();
+                //file.SaveFile();
+                file.SaveFileReplacingValues();
             }
             Logger.Instance.WriteLine("All files saved.");
         }
