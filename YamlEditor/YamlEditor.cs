@@ -7,6 +7,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Timers;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -18,6 +19,9 @@ namespace YamlEditor
 
         private MyYamlScalarNode selectedScalarNode { get; set; }
         private CommandManager Manager = new CommandManager();
+        
+        // Auto Save Timer
+        private System.Timers.Timer autoSaveTimer = new System.Timers.Timer();
 
         public YamlEditor()
         {
@@ -62,6 +66,12 @@ namespace YamlEditor
                     valueTextBox.Text = selectedScalarNode.value;
                 }
             };
+
+            // Auto Save Timer
+            autoSaveTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnAutoSaveTimedEvent);
+            autoSaveTimer.Interval = 5000;
+            autoSaveTimer.Enabled = false;
+            autoSaveCheckBox.Checked = false;
 
         }
 
@@ -406,6 +416,19 @@ namespace YamlEditor
             macroCommand.Add(new SetTagCommand(selectedScalarNode, tagTextBox.Text));
             macroCommand.Add(new SetValueCommand(selectedScalarNode, valueTextBox.Text));
             Manager.Execute(macroCommand);
+        }
+
+        private void OnAutoSaveTimedEvent(object source, ElapsedEventArgs e)
+        {
+            Logger.Instance.WriteLine("OnAutoSaveTimedEvent");
+            new MyYamlFile().SaveAllFiles();
+        }
+
+        private void autoSaveCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Logger.Instance.WriteLine("autoSaveCheckBox_CheckedChanged " + ((CheckBox)sender).CheckState.ToString());
+            if (((CheckBox)sender).CheckState == CheckState.Checked) autoSaveTimer.Enabled = true;
+            else autoSaveTimer.Enabled = false;
         }
     }
 }

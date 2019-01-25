@@ -44,6 +44,7 @@ namespace YamlEditor
             this.splitContainer_PropertiesGrid = new System.Windows.Forms.SplitContainer();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.propertiesTabPage = new System.Windows.Forms.TabPage();
+            this.autoSaveCheckBox = new System.Windows.Forms.CheckBox();
             this.updateButton = new System.Windows.Forms.Button();
             this.valueTextBoxLabel = new System.Windows.Forms.Label();
             this.tagTextBoxLabel = new System.Windows.Forms.Label();
@@ -242,6 +243,7 @@ namespace YamlEditor
             // 
             // propertiesTabPage
             // 
+            this.propertiesTabPage.Controls.Add(this.autoSaveCheckBox);
             this.propertiesTabPage.Controls.Add(this.updateButton);
             this.propertiesTabPage.Controls.Add(this.valueTextBoxLabel);
             this.propertiesTabPage.Controls.Add(this.tagTextBoxLabel);
@@ -256,6 +258,17 @@ namespace YamlEditor
             this.propertiesTabPage.TabIndex = 0;
             this.propertiesTabPage.Text = "Property";
             this.propertiesTabPage.UseVisualStyleBackColor = true;
+            // 
+            // autoSaveCheckBox
+            // 
+            this.autoSaveCheckBox.AutoSize = true;
+            this.autoSaveCheckBox.Location = new System.Drawing.Point(19, 123);
+            this.autoSaveCheckBox.Name = "autoSaveCheckBox";
+            this.autoSaveCheckBox.Size = new System.Drawing.Size(76, 17);
+            this.autoSaveCheckBox.TabIndex = 7;
+            this.autoSaveCheckBox.Text = "Auto Save";
+            this.autoSaveCheckBox.UseVisualStyleBackColor = true;
+            this.autoSaveCheckBox.CheckedChanged += new System.EventHandler(this.autoSaveCheckBox_CheckedChanged);
             // 
             // updateButton
             // 
@@ -484,6 +497,7 @@ namespace YamlEditor
         private System.Windows.Forms.TextBox valueTextBox;
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Button updateButton;
+        private System.Windows.Forms.CheckBox autoSaveCheckBox;
     }
 }
 
