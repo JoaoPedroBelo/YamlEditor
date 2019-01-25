@@ -334,9 +334,12 @@ namespace YamlEditor
             else
             {
                 selectedScalarNode = null;
+                nameTextBox.Text = "";
                 nameTextBox.Enabled = false;
+                tagTextBox.Text = "";
                 tagTextBox.Enabled = false;
                 valueTextBox.Enabled = false;
+                valueTextBox.Text = "";
                 updateButton.Enabled = false;
             }
         }
