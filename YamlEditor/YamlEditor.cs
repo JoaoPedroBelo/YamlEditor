@@ -8,6 +8,8 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Timers;
+using YamlDotNet.RepresentationModel;
+using System.Collections.Generic;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -19,7 +21,7 @@ namespace YamlEditor
 
         private MyYamlScalarNode selectedScalarNode { get; set; }
         private CommandManager Manager = new CommandManager();
-        
+
         // Auto Save Timer
         private System.Timers.Timer autoSaveTimer = new System.Timers.Timer();
 
@@ -75,12 +77,6 @@ namespace YamlEditor
 
         }
 
-        //Corre form no segundo ecra 
-        private void OnFormLoad(object sender, EventArgs e)
-        {
-            this.Location = Screen.AllScreens[1].WorkingArea.Location;
-        }
-
         public void ClearLogClicked(object sender, EventArgs e)
         {
             textBox_Log.Clear();
@@ -125,11 +121,11 @@ namespace YamlEditor
         private void PopulateTreeView(TreeView treeView, string base_directory)
         {
             treeView.Nodes.Clear();
-            
+
             foreach (MyYamlFile file in MyYamlFile.all_files)
             {
                 TreeNode new_node = new TreeNode();
-                
+
                 if (file.directory != (base_directory + "\\"))
                 {
                     //If file directory is different from the base directory loads the new directory files inside the directory node.
@@ -175,7 +171,7 @@ namespace YamlEditor
             else if (yamlnode is MyYamlMappingNode)
             {
                 TreeNode new_parent = new TreeNode();
-                
+
                 if (yamlnode.name == "")
                 {
                     try
@@ -244,7 +240,7 @@ namespace YamlEditor
                     {
                         new_node.Name = ((MyYamlScalarNode)subject).value;
                         new_node.Text = ((MyYamlScalarNode)subject).value;
-                        
+
                     }
                     else
                     {
@@ -301,7 +297,7 @@ namespace YamlEditor
                         folder_name = folder_name.Split('\\')[folder_name.Split('\\').Length - 1];
                     else if (folder_name.Contains("/"))
                         folder_name = folder_name.Split('/')[folder_name.Split('/').Length - 1];
-                    
+
                     if (folder_name == name) return node;
                 }
                 else
@@ -345,7 +341,7 @@ namespace YamlEditor
             Logger.Instance.WriteLine("onAfterSelect");
             if (e.Node.Tag is MyYamlScalarNode)
             {
-                Logger.Instance.WriteLine( "onAfterSelect: is MyYamlScalarNode @ line " + ((MyYamlScalarNode)e.Node.Tag).line.ToString() + " col " + ((MyYamlScalarNode)e.Node.Tag).col.ToString() );
+                Logger.Instance.WriteLine("onAfterSelect: is MyYamlScalarNode @ line " + ((MyYamlScalarNode)e.Node.Tag).line.ToString() + " col " + ((MyYamlScalarNode)e.Node.Tag).col.ToString());
                 selectedScalarNode = (MyYamlScalarNode)e.Node.Tag;
                 nameTextBox.Text = selectedScalarNode.name;
                 tagTextBox.Text = selectedScalarNode.tag;
@@ -444,6 +440,74 @@ namespace YamlEditor
             Logger.Instance.WriteLine("autoSaveCheckBox_CheckedChanged " + ((CheckBox)sender).CheckState.ToString());
             if (((CheckBox)sender).CheckState == CheckState.Checked) autoSaveTimer.Enabled = true;
             else autoSaveTimer.Enabled = false;
+        }
+
+        /// <summary>
+        /// Saves the files in a temporary folder and loads them into a YamlStream to validate the changes made
+        /// </summary>
+        private void toolStripButton_Validate_Click(object sender, EventArgs e)
+        {
+            if (mainTreeView.Nodes.Count == 0)
+            {
+                Logger.Instance.WriteLine("There are no files open, cannot validate changes.");
+            }
+            else
+            {
+                bool errorfound = false;
+
+                string temporarydirectory = GetTemporaryDirectory("YamlEditor");
+                Directory.CreateDirectory(temporarydirectory); //creates a YamlEditor folder in the operating systems temporary foder
+                string basedirectory = MyYamlFile.all_files[0].directory; //the first file is always the configuration.yaml
+                basedirectory = basedirectory.Remove(basedirectory.Length - 1); //removes the '/' at the end of the directory
+
+                MyYamlFile.SaveAllFilesInNewDirectory(basedirectory, temporarydirectory);
+
+                List<String> folders = new List<string>(); //creates a list of subfolders and an empty folder to represent the base folder
+                folders.Add("");
+                foreach (var subfolder in Directory.GetDirectories(temporarydirectory))
+                    folders.Add(subfolder);
+
+                foreach (string subfolder in folders)
+                {
+                    string path = subfolder;
+                    if (subfolder == "")
+                        path = temporarydirectory + "\\" + subfolder;
+
+                    DirectoryInfo d = new DirectoryInfo(Path.GetFullPath(path));//Assuming Test is your Folder
+                    FileInfo[] Files = d.GetFiles("*.yaml"); //Getting Text files
+                    foreach (FileInfo file in Files)
+                    {
+                        YamlStream yaml = new YamlStream();
+                        try
+                        {
+                            using (var stream = new StreamReader(file.FullName))
+                            {
+                                yaml.Load(stream);
+                            }
+                            Logger.Instance.WriteLine($"Validating:  '\"{file.FullName}\"'.");
+                        }
+                        catch (Exception exception)
+                        {
+                            Logger.Instance.WriteLine(exception.Message + " In file '" + file.FullName + "'");
+                            errorfound = true;
+                        }
+                    }
+                }
+
+                //Directory.Delete(temporarydirectory, true); //deletes the YamlEditor folder created in the operating systems temporary foder
+
+                if (errorfound)
+                    Logger.Instance.WriteLine("VALIDATION: Errors were found while validating the files.");
+                else
+                    Logger.Instance.WriteLine("VALIDATION: No errors were found while validating the files.");
+            }
+        }
+
+        public string GetTemporaryDirectory(string foldername)
+        {
+            string tempDirectory = Path.Combine(Path.GetTempPath(), foldername);
+            Directory.CreateDirectory(tempDirectory);
+            return tempDirectory;
         }
     }
 }

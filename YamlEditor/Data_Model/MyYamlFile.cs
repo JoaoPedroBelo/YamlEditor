@@ -346,6 +346,26 @@ namespace Data_Model
         }
 
         /// <summary>
+        /// Saves the file
+        /// </summary>
+        public void SaveFileInNewDirectory(string newdirectory)
+        {
+            System.IO.Directory.CreateDirectory(newdirectory); // creates directory if it doesnt exist
+            File.WriteAllText(newdirectory + "\\" + fileName, ToString());
+        }
+
+        /// <summary>
+        /// Saves the files in the recieved directory
+        /// </summary>
+        public static void SaveAllFilesInNewDirectory(string basedirectory, string newdirectory)
+        {
+            foreach (MyYamlFile file in all_files)
+            {
+                file.SaveFileInNewDirectory(file.directory.Replace(basedirectory,newdirectory));
+            }
+        }
+
+        /// <summary>
         /// Returns the all the file data as string
         /// </summary>
         public override string ToString()
@@ -372,7 +392,7 @@ namespace Data_Model
         }
 
         /// <summary>
-        /// Returns the all the files data as string for testing purposes
+        /// Returns the all the files diractories data as string for testing purposes
         /// </summary>
         public static string All_Files_Directory_ToString()
         {

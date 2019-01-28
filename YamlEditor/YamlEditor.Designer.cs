@@ -60,6 +60,7 @@ namespace YamlEditor
             this.textBox_Log = new System.Windows.Forms.TextBox();
             this.materialContextMenuStrip_LogMenu = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.toolStripMenuItem_ClearLog = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButton_Validate = new System.Windows.Forms.ToolStripButton();
             this.toolStrip_TopMenu.SuspendLayout();
             this.panel_MainForm.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitter_MainForm)).BeginInit();
@@ -90,7 +91,7 @@ namespace YamlEditor
             this.materialDivider_DragBar.Location = new System.Drawing.Point(0, 0);
             this.materialDivider_DragBar.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialDivider_DragBar.Name = "materialDivider_DragBar";
-            this.materialDivider_DragBar.Size = new System.Drawing.Size(1235, 23);
+            this.materialDivider_DragBar.Size = new System.Drawing.Size(900, 23);
             this.materialDivider_DragBar.TabIndex = 0;
             this.materialDivider_DragBar.Text = "materialDivider1";
             // 
@@ -114,10 +115,11 @@ namespace YamlEditor
             this.toolStripButton_OpenFile,
             this.toolStripButton_Save,
             this.toolStripButton_Undo,
-            this.toolStripButton_Redo});
+            this.toolStripButton_Redo,
+            this.toolStripButton_Validate});
             this.toolStrip_TopMenu.Location = new System.Drawing.Point(0, 23);
             this.toolStrip_TopMenu.Name = "toolStrip_TopMenu";
-            this.toolStrip_TopMenu.Size = new System.Drawing.Size(1235, 25);
+            this.toolStrip_TopMenu.Size = new System.Drawing.Size(900, 25);
             this.toolStrip_TopMenu.TabIndex = 3;
             this.toolStrip_TopMenu.Text = "toolStrip_TopMenu";
             // 
@@ -167,7 +169,7 @@ namespace YamlEditor
             this.panel_MainForm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_MainForm.Location = new System.Drawing.Point(0, 48);
             this.panel_MainForm.Name = "panel_MainForm";
-            this.panel_MainForm.Size = new System.Drawing.Size(1235, 652);
+            this.panel_MainForm.Size = new System.Drawing.Size(900, 452);
             this.panel_MainForm.TabIndex = 4;
             // 
             // splitter_MainForm
@@ -183,8 +185,8 @@ namespace YamlEditor
             // splitter_MainForm.Panel2
             // 
             this.splitter_MainForm.Panel2.Controls.Add(this.splitContainer_PropertiesGrid);
-            this.splitter_MainForm.Size = new System.Drawing.Size(1235, 652);
-            this.splitter_MainForm.SplitterDistance = 410;
+            this.splitter_MainForm.Size = new System.Drawing.Size(900, 452);
+            this.splitter_MainForm.SplitterDistance = 298;
             this.splitter_MainForm.TabIndex = 0;
             // 
             // mainTreeView
@@ -195,7 +197,7 @@ namespace YamlEditor
             this.mainTreeView.Location = new System.Drawing.Point(0, 0);
             this.mainTreeView.Name = "mainTreeView";
             this.mainTreeView.SelectedImageIndex = 0;
-            this.mainTreeView.Size = new System.Drawing.Size(410, 652);
+            this.mainTreeView.Size = new System.Drawing.Size(298, 452);
             this.mainTreeView.TabIndex = 0;
             this.mainTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OnAfterSelect);
             this.mainTreeView.DoubleClick += new System.EventHandler(this.OnDoubleClick);
@@ -226,8 +228,8 @@ namespace YamlEditor
             // splitContainer_PropertiesGrid.Panel2
             // 
             this.splitContainer_PropertiesGrid.Panel2.Controls.Add(this.splitContainer_Log);
-            this.splitContainer_PropertiesGrid.Size = new System.Drawing.Size(821, 652);
-            this.splitContainer_PropertiesGrid.SplitterDistance = 428;
+            this.splitContainer_PropertiesGrid.Size = new System.Drawing.Size(598, 452);
+            this.splitContainer_PropertiesGrid.SplitterDistance = 180;
             this.splitContainer_PropertiesGrid.TabIndex = 0;
             // 
             // mainTabControl
@@ -238,12 +240,11 @@ namespace YamlEditor
             this.mainTabControl.Location = new System.Drawing.Point(0, 0);
             this.mainTabControl.Name = "mainTabControl";
             this.mainTabControl.SelectedIndex = 0;
-            this.mainTabControl.Size = new System.Drawing.Size(821, 428);
+            this.mainTabControl.Size = new System.Drawing.Size(598, 180);
             this.mainTabControl.TabIndex = 2;
             // 
             // propertiesTabPage
             // 
-            this.propertiesTabPage.Controls.Add(this.autoSaveCheckBox);
             this.propertiesTabPage.Controls.Add(this.updateButton);
             this.propertiesTabPage.Controls.Add(this.valueTextBoxLabel);
             this.propertiesTabPage.Controls.Add(this.tagTextBoxLabel);
@@ -254,7 +255,7 @@ namespace YamlEditor
             this.propertiesTabPage.Location = new System.Drawing.Point(4, 22);
             this.propertiesTabPage.Name = "propertiesTabPage";
             this.propertiesTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.propertiesTabPage.Size = new System.Drawing.Size(813, 402);
+            this.propertiesTabPage.Size = new System.Drawing.Size(590, 154);
             this.propertiesTabPage.TabIndex = 0;
             this.propertiesTabPage.Text = "Property";
             this.propertiesTabPage.UseVisualStyleBackColor = true;
@@ -262,12 +263,14 @@ namespace YamlEditor
             // autoSaveCheckBox
             // 
             this.autoSaveCheckBox.AutoSize = true;
-            this.autoSaveCheckBox.Location = new System.Drawing.Point(19, 123);
+            this.autoSaveCheckBox.BackColor = System.Drawing.Color.Transparent;
+            this.autoSaveCheckBox.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.autoSaveCheckBox.Location = new System.Drawing.Point(217, 36);
             this.autoSaveCheckBox.Name = "autoSaveCheckBox";
             this.autoSaveCheckBox.Size = new System.Drawing.Size(76, 17);
             this.autoSaveCheckBox.TabIndex = 7;
             this.autoSaveCheckBox.Text = "Auto Save";
-            this.autoSaveCheckBox.UseVisualStyleBackColor = true;
+            this.autoSaveCheckBox.UseVisualStyleBackColor = false;
             this.autoSaveCheckBox.CheckedChanged += new System.EventHandler(this.autoSaveCheckBox_CheckedChanged);
             // 
             // updateButton
@@ -334,7 +337,7 @@ namespace YamlEditor
             this.helpTabPage.Location = new System.Drawing.Point(4, 22);
             this.helpTabPage.Name = "helpTabPage";
             this.helpTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.helpTabPage.Size = new System.Drawing.Size(813, 402);
+            this.helpTabPage.Size = new System.Drawing.Size(590, 154);
             this.helpTabPage.TabIndex = 1;
             this.helpTabPage.Text = "Help";
             this.helpTabPage.UseVisualStyleBackColor = true;
@@ -345,7 +348,7 @@ namespace YamlEditor
             this.mainWebBrowser.Location = new System.Drawing.Point(3, 3);
             this.mainWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.mainWebBrowser.Name = "mainWebBrowser";
-            this.mainWebBrowser.Size = new System.Drawing.Size(807, 396);
+            this.mainWebBrowser.Size = new System.Drawing.Size(584, 148);
             this.mainWebBrowser.TabIndex = 0;
             // 
             // splitContainer_Log
@@ -364,7 +367,7 @@ namespace YamlEditor
             // splitContainer_Log.Panel2
             // 
             this.splitContainer_Log.Panel2.Controls.Add(this.textBox_Log);
-            this.splitContainer_Log.Size = new System.Drawing.Size(821, 220);
+            this.splitContainer_Log.Size = new System.Drawing.Size(598, 268);
             this.splitContainer_Log.SplitterDistance = 35;
             this.splitContainer_Log.TabIndex = 0;
             // 
@@ -407,7 +410,7 @@ namespace YamlEditor
             this.textBox_Log.Name = "textBox_Log";
             this.textBox_Log.ReadOnly = true;
             this.textBox_Log.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_Log.Size = new System.Drawing.Size(821, 181);
+            this.textBox_Log.Size = new System.Drawing.Size(598, 229);
             this.textBox_Log.TabIndex = 0;
             // 
             // materialContextMenuStrip_LogMenu
@@ -426,11 +429,22 @@ namespace YamlEditor
             this.toolStripMenuItem_ClearLog.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem_ClearLog.Text = "Clear Log";
             // 
+            // toolStripButton_Validate
+            // 
+            this.toolStripButton_Validate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton_Validate.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_Validate.Image")));
+            this.toolStripButton_Validate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_Validate.Name = "toolStripButton_Validate";
+            this.toolStripButton_Validate.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton_Validate.Text = "Validate";
+            this.toolStripButton_Validate.Click += new System.EventHandler(this.toolStripButton_Validate_Click);
+            // 
             // YamlEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1235, 700);
+            this.ClientSize = new System.Drawing.Size(900, 500);
+            this.Controls.Add(this.autoSaveCheckBox);
             this.Controls.Add(this.panel_MainForm);
             this.Controls.Add(this.toolStrip_TopMenu);
             this.Controls.Add(this.label_TopBar);
@@ -438,7 +452,6 @@ namespace YamlEditor
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "YamlEditor";
-            this.Load += new System.EventHandler(this.OnFormLoad);
             this.toolStrip_TopMenu.ResumeLayout(false);
             this.toolStrip_TopMenu.PerformLayout();
             this.panel_MainForm.ResumeLayout(false);
@@ -498,6 +511,7 @@ namespace YamlEditor
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.CheckBox autoSaveCheckBox;
+        private System.Windows.Forms.ToolStripButton toolStripButton_Validate;
     }
 }
 
