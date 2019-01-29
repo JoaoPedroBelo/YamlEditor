@@ -494,7 +494,7 @@ namespace YamlEditor
                     }
                 }
 
-                //Directory.Delete(temporarydirectory, true); //deletes the YamlEditor folder created in the operating systems temporary foder
+                Directory.Delete(temporarydirectory, true); //deletes the YamlEditor folder created in the operating systems temporary foder
 
                 if (errorfound)
                     Logger.Instance.WriteLine("VALIDATION: Errors were found while validating the files.");
